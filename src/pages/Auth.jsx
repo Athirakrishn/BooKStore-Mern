@@ -9,18 +9,18 @@ function Auth({ register}) {
     <div> 
       <div className="flex flex-col items-center justify-center h-screen bg-cover  bg-[url(https://i.pinimg.com/1200x/0f/67/17/0f671747ea96a1ca31b8c6eec2cb9063.jpg)]">
        {/* <div className="flex flex-col items-center justify-center h-screen w-full" style={{backgroundColor:"rgb(0, 0, 0,0.3)"}}> */}
-<div className="p-10">
-  <h1 className='text-3xl font-bold'>BOOK STORE</h1>
-  <div className="text-white bg-black p-5 text-center my-5 ">
+<div className="p-10 text-center">
+  <h1 className='text-3xl text-white font-bold'>BOOK STORE</h1>
+  <div className=" text-center text-white bg-black p-5 my-5 ">
        
     <div style={{width:"90px",height:"90px",borderRadius:'50%'}}
-    className='border mb-5 flex items-center justify-center'>
+    className='text-center border mb-5 flex items-center justify-center'>
       <FontAwesomeIcon icon={faUser} className='text-3xl' /> 
     </div>
    <h1 className='text-3xl font-bold'>{register?"Register":"login"}</h1>
   <form className="my-5">
      {
-    register &&      <input type="text" placeholder='User Name' className='bg-white p-2 w-full rounded placeholder-gray-600 mb-3' />
+    register && <input type="text" placeholder='User Name' className='bg-white p-2 w-full rounded placeholder-gray-600 mb-3' />
 
   }
     <input type="email" placeholder='Email' className='bg-white p-2 w-full rounded placeholder-gray-600 mb-3' />
