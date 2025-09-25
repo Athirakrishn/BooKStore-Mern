@@ -40,7 +40,7 @@ function App() {
     <Route path='/admin-careers' element={<CareerAdmin/>}/>
     <Route path='/admin-settings' element={<SettingAdmin/>}/>
 
-    <Route path='/*' element={<Pnf/>}/>
+    <Route path='*' element={<Pnf/>}/>
    </Routes>
     </>
   )

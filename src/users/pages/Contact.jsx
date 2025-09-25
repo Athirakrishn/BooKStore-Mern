@@ -8,12 +8,12 @@ function Contact() {
     <>
 <Header/>
   <div className=" text-center items-center p-10">
-    <h1 className='text-3xl my-3'>Contacts</h1>
-    <p>
+    <h1 className='text-3xl font-bold my-3'>Contacts</h1>
+    <p className=''> 
    Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse ratione, officia delectus consequuntur, dicta libero magni omnis architecto voluptas culpa praesentium ipsum assumenda quae dolor, nihil rerum fugit expedita corrupti. Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio maiores fuga, modi vel accusantium magnam ex,ratione  aliquam eius odit consequuntur earum, itaque nulla labore veritatis quis aut atque!
    </p>
 </div>
-<div className="grid md:grid-cols-3 my-4 justify-start">
+<div className="grid md:grid-cols-3 my-4 justify-evenly">
 <div className="flex justify-center">
   <div className='bg-gray-300 rounded-[50%] p-3'>
     <FontAwesomeIcon icon={faLocationDot} className='text-3xl' />
