@@ -1,8 +1,14 @@
 import React from 'react'
+import AdminHeader from '../components/AdminHeader'
+import AdminSidebar from '../components/AdminSidebar'
 
 function AdminDashBoard() {
   return (
-    <div>AdminDashBoard</div>
+    <>
+      <AdminHeader/>
+      
+      <AdminSidebar/>
+    </>
   )
 }
 
