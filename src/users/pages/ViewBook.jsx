@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Header  from '../components/Header'
 import Footer from '../../components/Footer'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBackward, faEye } from '@fortawesome/free-solid-svg-icons'
+import { faBackward, faCamera, faEye, faXmark } from '@fortawesome/free-solid-svg-icons'
+import { Link } from 'react-router-dom'
 
 function ViewBook() {
+  const [modalStatus,setModalStatus] = useState(false)
   return (
     <>
 <Header/>
@@ -17,7 +19,7 @@ function ViewBook() {
  <div className="col-span-3 mx-5">
   <div className="m-5 flex justify-between">
     <h1 className='text-xl font-bold'>Title</h1>
-    <button> <FontAwesomeIcon icon={faEye} className='text-gray-400'/></button>
+    <button onClick={()=>setModalStatus(true)}> <FontAwesomeIcon icon={faEye} className='text-gray-400'/></button>
   </div>
   
     <p className='my-3 text-blue-700'>-Author</p>
@@ -35,13 +37,36 @@ function ViewBook() {
 
 </div>
 <div className=' flex justify-end px-3'>
-  <button className='bg-blue-900 text-white p-2 rounded'>< FontAwesomeIcon icon={faBackward} className='me-3'/>Back</button>
+  <Link to={'/all-books'} className='bg-blue-900 text-white p-2 rounded'>< FontAwesomeIcon icon={faBackward} className='me-3'/>Back</Link>
   <button className='bg-green-900 text-white p-2 rounded'>Buy $123</button>  
 </div>
  </div>
   </div>
 </div>
 </div>
+{/* modal */}
+{ modalStatus && <div className='relative z-10 ' onClick={()=>setModalStatus(false)}>
+<div className="bg-gray-500/75 fixed inset-0 transition-opacity">
+<div className="justify-center flex items-center md:min-h-screen">
+<div className='bg-white text-black h-100 md:w-200 w-100 rounded'>
+  <div className='bg-black text-white flex justify-between items-center p-3'>
+    <h3>Books Images</h3>
+    <FontAwesomeIcon icon={faXmark} onClick={()=>setModalStatus(false)}/>
+  </div>
+  <p className='text-blue-600 my-5 ml-5'>
+    <FontAwesomeIcon icon={faCamera} className='me-2'/>
+    Camera click of the book in the hand of seller
+  </p>
+
+  <div className="md-flex flex-cols-3 flex-wrap my-4">
+  {/* duplicate images */}
+  <img className=''  style={{width:"250px",height:"250px"}} src=" https://images.pexels.com/photos/1130980/pexels-photo-1130980.jpeg?cs=srgb&dl=assortment-book-bindings-books-1130980.jpg&fm=jpg" alt="book images" />
+
+  </div>
+</div>
+</div>
+</div>
+</div>}
 <Footer/>
 
     </>
