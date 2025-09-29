@@ -14,7 +14,7 @@ function SettingAdmin() {
   <div className="col-span-1">
     <AdminSidebar/>
   </div>
-  <div className="col-span-4 ms-12">
+  <div className="col-span-4 ms-12 ">
      <h1 className="font-2xl font-bold text-center my-10">
       settings
      </h1>

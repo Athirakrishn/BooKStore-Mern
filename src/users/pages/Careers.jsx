@@ -67,21 +67,20 @@ function Careers() {
                 </div>
                 <div className=' m-6 md:w-180  items-center  text center '>
                   <div className='md:grid md:grid-cols-2 my-5 '>
-                    <input type="text" placeholder='Full Name' className='m-2 border border-gray-100' />
-                    <input type="text" placeholder='Qualification' className='m-2 border border-gray-100' />
-                    <input type="email" placeholder='Email' className='m-2 border border-gray-100' />
-                    <input type="Phone" placeholder='Full Name' className='m-2 border border-gray-100' />
+                    <input type="text" placeholder='Full Name' className='m-2 border ' />
+                    <input type="text" placeholder='Qualification' className='m-2 border ' />
+                    <input type="email" placeholder='Email' className='m-2 border ' />
+                    <input type="Phone" placeholder='Full Name' className='m-2 border ' />
                   </div>
-                  <textarea type="text" rows={3} placeholder='Cover Letter' className='md:w-180 px-2 border border-gray-100' />
+                  <textarea type="text" rows={3} placeholder='Cover Letter' className='md:w-180 px-2 border ' />
   
-                  <div className='flex justify-start md:w-180 my-4 border border-gray-200'>
+                  <div className='flex justify-start md:w-180 my-4 border '>
                     <div className='px-10 py-1 bg-gray-300 text-black'>Chose file</div>
                     <input type="file" className="py-1 px-10 " placeholder='No file chosen' />
                   </div>
-  
                    <div className='flex justify-end md:w-180 my-4'>
-                <button className='bg-red-500 text-white w-30 p-2 m-2'>Reset</button>
-                <button className='bg-green-500 text-white w-30 p-2 m-2' onClick={()=>setCareerModal(false)}>Submit</button>
+                <button className=' rounded bg-red-500 text-white w-30 p-2 m-2'>Reset</button>
+                <button className=' rounded bg-green-500 text-white w-30 p-2 m-2' onClick={()=>setCareerModal(false)}>Submit</button>
                   </div>
   
                 </div>
@@ -100,7 +99,6 @@ function Careers() {
 
 
       <Footer />
-
 
     </>
   )
