@@ -108,10 +108,54 @@ function Profile() {
           <div className="p-10 shadow my-20 rounded ">
             {/* duplicate div according to book*/}
             <div className="p-5 rounded mt-4 bg-gray-100">
-              <div className=".md:grid grid-cols-[3fr_1fr]">
+              <div className="md:grid grid-cols-[3fr_1fr]">
+              <div className="px-4">
+              <h1 className="text-2xl">Book Title</h1>
+              <h2 className='text-xl'>Author</h2>
+              <h3 className="text-lg text-blue-500">$399</h3>
+              <div className="text-justify">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Doloremque, numquam a? Laudantium molesti doloremque dolores possimus sint minima mollitia. Eos esse velit est veniam, incidunt sequi commodi doloribus illum hic ducimus dicta vel.</div>
+              <div className="flex mt-3">
+                <img src='https://psdstamps.com/wp-content/uploads/2022/04/round-pending-stamp-png.png' alt='pending' className='w-30 h-30'></img>
+                  <img src='https://pngimg.com/uploads/approved/approved_PNG1.png' alt='approved' className='w-24 h-24'></img>
+              </div>
+
+              </div>
+              <div className="px-4 mt-4 md:mt-0">
+                <img className='h-60 w-40' src="https://tse1.mm.bing.net/th/id/OIP.TNXyaAG3BpbDHMFeOuVchQHaE7?pid=Api&P=0&h=180" alt="book" />
+               <div className="mt-4 flex justify-end">
+               <button className='py-2 px-3 bg-red-600 text-white ms-3 hover:bg-white hover:border hover:text-red-600 hover:border-red-600'>Delete</button>
+
+               </div>
+              </div>
 
 
               
+
+</div>
+            </div>
+          </div>
+        }
+{/* purchase */}
+ {
+          purchaseStatus &&
+          <div className="p-10 shadow my-20 rounded ">
+            {/* duplicate div according to book*/}
+            <div className="p-5 rounded mt-4 bg-gray-100">
+              <div className="md:grid grid-cols-[3fr_1fr]">
+              <div className="px-4">
+              <h1 className="text-2xl">Book Title</h1>
+              <h2 className='text-xl'>Author</h2>
+              <h3 className="text-lg text-blue-500">$399</h3>
+              <div className="text-justify">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Doloremque, numquam a? Laudantium molesti doloremque dolores possimus sint minima mollitia. Eos esse velit est veniam, incidunt sequi commodi doloribus illum hic ducimus dicta vel.</div>
+              <div className="flex mt-3">
+                
+                  <img src='https://www.pngmart.com/files/7/Sold-PNG-Photo.png' alt='approved' className='w-24 h-24'></img>
+              </div>
+
+              </div>
+              <div className="px-4 mt-4 md:mt-0">
+                <img className='h-60 w-40' src="https://tse1.mm.bing.net/th/id/OIP.TNXyaAG3BpbDHMFeOuVchQHaE7?pid=Api&P=0&h=180" alt="book" />
+              </div>
 
 </div>
             </div>
