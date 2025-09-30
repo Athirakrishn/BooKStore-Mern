@@ -1,10 +1,11 @@
-import { faUser } from '@fortawesome/free-solid-svg-icons'
+import { faEye, faEyeSlash, faUser } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 function Auth({ register}) {
-  
+  const [userDetails,setUserDetails]=useState({username:"",email:"",password:""})
+  const [viewPasswordStatus,setViewPasswordStatus]=useState(false)
   return (
     <div> 
       <div className="flex flex-col items-center justify-center h-screen bg-cover  bg-[url(https://i.pinimg.com/1200x/0f/67/17/0f671747ea96a1ca31b8c6eec2cb9063.jpg)]">
@@ -20,11 +21,18 @@ function Auth({ register}) {
    <h1 className='text-3xl font-bold'>{register?"Register":"login"}</h1>
   <form className="my-5">
      {
-    register && <input type="text" placeholder='User Name' className='bg-white p-2 w-full rounded placeholder-gray-600 mb-3' />
+    register && <input value={userDetails.username} onChange={e=>setUserDetails({...userDetails,username:e.target.value})} type="text" placeholder='User Name' className='bg-white p-2 w-full rounded placeholder-gray-600 mb-3 text-black' />
 
   }
-    <input type="email" placeholder='Email' className='bg-white p-2 w-full rounded placeholder-gray-600 mb-3' />
-   <input type="password" placeholder='Password' className='bg-white p-2 w-full rounded placeholder-gray-600 mb-3' />
+  <input value={userDetails.email} onChange={e=>setUserDetails({...userDetails,email:e.target.value})} type="email" placeholder='Email' className='bg-white p-2 w-full rounded placeholder-gray-600 mb-3 text-black' />
+   <div className='flex items-center'>
+     <input value={userDetails.password} onChange={e=>setUserDetails({...userDetails,password:e.target.value})} type={viewPasswordStatus ?"text":"password" }placeholder='Password' className='bg-white p-2 w-full rounded placeholder-gray-600 mb-3 text-black' />
+{  viewPasswordStatus ? <FontAwesomeIcon icon={faEye} style={{marginLeft:"-30px"}} className='text-gray-600' 
+ onClick={()=>setViewPasswordStatus(!viewPasswordStatus)}/>
+   : <FontAwesomeIcon icon={faEyeSlash} style={{marginLeft:"-30px"}} className='text-gray-600'
+   onClick={()=>setViewPasswordStatus(!viewPasswordStatus)}/>}
+  
+   </div>
 <div className='flex justify-between mb-5 '>
  
 <p className='text-sm text-orange-300'>*never share your password with others </p>
