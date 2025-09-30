@@ -11,10 +11,10 @@ function Profile() {
   return (
     <>
       <Header />
-      <div className="bg-black " style={{ height: "200px" }}>
-        <div className="bg-white p-3" style={{ width: "200px", height: "200px", borderRadius: "50%", marginLeft: "70px", marginTop: "-5px" }}>
-          <img style={{ width: "200px", width: "200px", borderRadius: "50%" }} src="https://tse3.mm.bing.net/th/id/OIP.1waDZ8Q2eWBkenMscI08qAHaHa?pid=Api&P=0&h=180" alt="profile" />
+      <div className="bg-black " style={{ height: "180px" }}>
         </div>
+         <div className="bg-white p-3" style={{ width: "200px", height: "200px", borderRadius: "50%", marginLeft: "70px", marginTop: "-110px" }}>
+          <img style={{ width: "200px", width: "200px", borderRadius: "50%" }} src="https://tse3.mm.bing.net/th/id/OIP.1waDZ8Q2eWBkenMscI08qAHaHa?pid=Api&P=0&h=180" alt="profile" />
       </div>
       <div className="md:flex justify-between px-20 mt-5">
         <div className="flex items-center">
