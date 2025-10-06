@@ -19,7 +19,7 @@ function Profile() {
       <div className="md:flex justify-between px-20 mt-5">
         <div className="flex items-center">
           <h1 className='font-bold md:text-3xl text-2xl'>UserName</h1>
-          <FontAwesomeIcon icon={faCircleCheck} className='text-blue-400' />
+          <FontAwesomeIcon icon={faCircleCheck} className='text-blue-400'/>
         </div>
         <div>Edit</div>
       </div>

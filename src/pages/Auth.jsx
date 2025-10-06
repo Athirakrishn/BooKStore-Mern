@@ -2,10 +2,23 @@ import { faEye, faEyeSlash, faUser } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import {  toast, ToastContainer } from 'react-toastify'
+
 
 function Auth({ register}) {
   const [userDetails,setUserDetails]=useState({username:"",email:"",password:""})
   const [viewPasswordStatus,setViewPasswordStatus]=useState(false)
+  // console.log(userDetails);
+  const handleRegister =()=>{
+ console.log("Inside the handle");
+const {username,email,password}=userDetails
+if(!username || !email || !password){
+toast.info("please fill the form completely!!!")
+}else{
+toast.success("proceed API call")
+}
+ 
+  }
   return (
     <div> 
       <div className="flex flex-col items-center justify-center h-screen bg-cover  bg-[url(https://i.pinimg.com/1200x/0f/67/17/0f671747ea96a1ca31b8c6eec2cb9063.jpg)]">
@@ -19,7 +32,7 @@ function Auth({ register}) {
       <FontAwesomeIcon icon={faUser} className='text-3xl' /> 
     </div>
    <h1 className='text-3xl font-bold'>{register?"Register":"login"}</h1>
-  <form className="my-5">
+  <form className="my-5"> 
      {
     register && <input value={userDetails.username} onChange={e=>setUserDetails({...userDetails,username:e.target.value})} type="text" placeholder='User Name' className='bg-white p-2 w-full rounded placeholder-gray-600 mb-3 text-black' />
 
@@ -41,9 +54,9 @@ function Auth({ register}) {
 <div className='text-center'>
 {
   register?
-  <button className='bg-green-700 p-2 w-full rounded'>Register</button>
+  <button type='button' onClick={handleRegister} className='bg-green-700 p-2 w-full rounded'>Register</button>
 : 
-  <button className='bg-green-700 p-2 w-full rounded'>Login</button>
+  <button type='button' className='bg-green-700 p-2 w-full rounded'>Login</button>
 
 }
 </div>
@@ -60,6 +73,18 @@ function Auth({ register}) {
   </div>
 </div>
        </div>
+
+<ToastContainer
+position="top-right"
+autoClose={5000}
+pauseOnFocusLoss
+draggable
+pauseOnHover
+theme="colored"
+
+/>
+
+
       </div>
     // </div>
   )
