@@ -1,6 +1,7 @@
 
 import { faFacebook, faInstagram, faTwitter, faUber } from '@fortawesome/free-brands-svg-icons'
-import { faBars, faUser } from '@fortawesome/free-solid-svg-icons'
+import { faAddressCard } from '@fortawesome/free-regular-svg-icons'
+import { faBars, faPowerOff, faUser } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
@@ -9,6 +10,7 @@ function Header() {
   const [listStatus, setListStatus] = useState(false)
   const [token, setToken] = useState("")
   const [userDp, setUserDp] = useState("")
+  const [dropDownStatus,setDropDownStatus] = useState(false)
   useEffect(() => {
     if (sessionStorage.getItem("token")) {
       const token = sessionStorage.getItem("token")
@@ -42,11 +44,23 @@ function Header() {
           {/* login link   */}
           {!token ? <Link to={'/login'}> <button className='border border-black rounded px-3 py-3 hover:bg-black hover:text-white'><FontAwesomeIcon icon={faUser} className='me-2' /> Login</button> </Link>
             :
-            <div>
-              <button>
-                <img width={'40px'} height={''} src={userDp == "" ? "https://thumb.ac-illust.com/51/51e1c1fc6f50743937e62fca9b942694_t.jpeg" : ""} alt="user" />
-              </button>
-            </div>
+            <div className="relative inline-block text-left">
+       
+                <button 
+                onClick={()=>setDropDownStatus(!dropDownStatus)}
+                className='inline-flex w-full items-center justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs hover:bg-gray-50'>
+                  <img width={'40px'} height={'40px'} style={{borderRadius:'50%'}} className='mx-2' src={userDp == "" ? "https://thumb.ac-illust.com/51/51e1c1fc6f50743937e62fca9b942694_t.jpeg" : ""} alt="user" />
+                </button>
+              { dropDownStatus && <div className='absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-hidden '>
+                <div className="py-1 ">
+                  <Link className='block px-2 py-2 text-sm text-gray-700' to={'/profile'}> <FontAwesomeIcon icon={faAddressCard} className='me-2'/> Profile
+                  </Link>
+                  <button className='block px-2 py-2 text-sm text-gray-700'><FontAwesomeIcon icon={faPowerOff} className='me-2'/>Logout</button>
+                </div>
+               </div>}
+
+             </div>
+           
           }
         </div>
 
