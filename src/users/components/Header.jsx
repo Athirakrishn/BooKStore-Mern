@@ -4,13 +4,14 @@ import { faAddressCard } from '@fortawesome/free-regular-svg-icons'
 import { faBars, faPowerOff, faUser } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 function Header() {
   const [listStatus, setListStatus] = useState(false)
   const [token, setToken] = useState("")
   const [userDp, setUserDp] = useState("")
   const [dropDownStatus,setDropDownStatus] = useState(false)
+  const navigate = useNavigate()
   useEffect(() => {
     if (sessionStorage.getItem("token")) {
       const token = sessionStorage.getItem("token")
@@ -20,6 +21,13 @@ function Header() {
 
     }
   })
+// logout
+const logOut = ()=>{
+  sessionStorage.clear()
+  navigate('/')
+}
+
+
   return (
     <>
 
@@ -55,7 +63,7 @@ function Header() {
                 <div className="py-1 ">
                   <Link className='block px-2 py-2 text-sm text-gray-700' to={'/profile'}> <FontAwesomeIcon icon={faAddressCard} className='me-2'/> Profile
                   </Link>
-                  <button className='block px-2 py-2 text-sm text-gray-700'><FontAwesomeIcon icon={faPowerOff} className='me-2'/>Logout</button>
+                  <button onClick={logOut} className='block px-2 py-2 text-sm text-gray-700'><FontAwesomeIcon icon={faPowerOff} className='me-2'/>Logout</button>
                 </div>
                </div>}
 
