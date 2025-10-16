@@ -18,12 +18,14 @@ function Header() {
       setToken(token)
       const user = JSON.parse(sessionStorage.getItem("user"))
       setUserDp(user.profile)
-
     }
-  })
+  },[token])
 // logout
 const logOut = ()=>{
   sessionStorage.clear()
+  setToken("")
+  setUserDp("")
+  setDropDownStatus(false)
   navigate('/')
 }
 
@@ -57,7 +59,8 @@ const logOut = ()=>{
                 <button 
                 onClick={()=>setDropDownStatus(!dropDownStatus)}
                 className='inline-flex w-full items-center justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs hover:bg-gray-50'>
-                  <img width={'40px'} height={'40px'} style={{borderRadius:'50%'}} className='mx-2' src={userDp == "" ? "https://thumb.ac-illust.com/51/51e1c1fc6f50743937e62fca9b942694_t.jpeg" : ""} alt="user" />
+                  <img width={'40px'} height={'40px'} style={{borderRadius:'50%'}} className='mx-2' src={userDp == "" ? "https://thumb.ac-illust.com/51/51e1c1fc6f50743937e62fca9b942694_t.jpeg" : userDp} alt="user" />
+               
                 </button>
               { dropDownStatus && <div className='absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-hidden '>
                 <div className="py-1 ">

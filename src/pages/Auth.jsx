@@ -94,14 +94,29 @@ const handleGoogleLogin =async(credentialResponse)=>{
   const credential = credentialResponse.credential
   const details = jwtDecode(credential)
   console.log(details);
-try{
-  const result = await googleLoginAPI({username:details.name,email:details.email,password:''
-  
-  })
-  
-}catch{
+try {
+      const result = await googleLoginAPI({ username: details.name, email: details.email, password: 'googlepswd', profile: details.picture })
+      console.log(result);
+      if (result.status == 200) {
+        toast.success("Login Successfully")
+        sessionStorage.setItem("user", JSON.stringify(result.data.user))
+        sessionStorage.setItem("token", result.data.token)
+        setTimeout(() => {
+          if (result.data.user.role == "admin") {
+            navigate('/admin-dashboard')
+          } else {
+            navigate('/')
+          }
+        }, 2500)
+      } else {
+        toast.error("Something went wrong")
+      }
+    } catch (err) {
+      console.log(err);
 
-}
+    }
+
+// -------------------------
   
 }
 
