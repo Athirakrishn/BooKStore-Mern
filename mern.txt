@@ -338,32 +338,43 @@ MONGOOOS ---------------
  - performance
  - Middleware
 
-4.Routing refers to determining how an application responds to a client request to a particular endpoint, which is a URI (or path) and a specific HTTP request method (GET, POST, and so on). 
-  -syntax :app.METHOD(PATH,HANDLER Callback)
-  -Route parameter : are specified in the path with a colon: prefix , in express  use 'req.params'
-  -Query parameter :
-  -
+4. Routing refers to determining how an application responds to a client request to a particular endpoint, which is a URI (or path) and a specific HTTP request method (GET, POST, and so on).
+        - syntax : app.METHOD(PATH, HANDLER Callback)
+        - Route Parameters : are specified in the path with a colon : prefix., in express use 'req.params'
+            Example: /users/:userId/books/:bookId , route Parameters - userId, bookId
+        - Query Parameters :  are key-value pairs that appear after the ? in a URL., req.query.key
+            Example URL: http://example.com/search?q=express&page=2
+            an: q=express, page=2
+        - Routing in Separate Files : using Express Router, using router we can set up path, 
+            - syntax : express.Router().httpRequest(PATH,HANDLER Callback)
+
 
   - syntax: express.Router().httpRequest(path,middleware,HANDLER callback)
 5.Middleware : is a function that can control request response cycle  
- -several type of middleware
-      - Application-level Middleware :bound to the Express application instance using app.use(middleware) or app.METHOD() functions
-      - Router-level middleware : works similarly to application-level middleware but is bound to an instance of express.Router().httpRequest(path,middleware,HANDLER callback)
- - Built-in Middleware:
-       -express.json(): Parse JSON request bodies 
-       -express.urlencoded(): Parse URL-encoded request bodies
-       -express.static(): Serve static files
-       -express.Router(): Create modular route handlers
--Third-party Middleware
-     -CORS
--Custom Middleware: function middleware-name(req,res,next)     
+    -several type of middleware
+        - Application-level Middleware :bound to the Express application instance using app.use(middleware) or app.METHOD() functions
+        - Router-level middleware : works similarly to application-level middleware but is bound to an instance of express.Router().httpRequest(path,middleware,HANDLER callback)
+    - Built-in Middleware:
+        -express.json(): Parse JSON request bodies 
+        -express.urlencoded(): Parse URL-encoded request bodies
+        -express.static(): Serve static files
+        -express.Router(): Create modular route handlers
+    -Third-party Middleware
+        -CORS
 
-  req
-  res
-  next
-
+- Custom Middleware : function middleware-name(req,res,next){ body }
+            - req : request object
+            - res : response object
+            - next() : to pass control to the next middleware function
    
+8.multer - node.js middleware for handling multipart/form-data
+        - which is primarily used for uploading files   
+        - for install npm i multer
 
+         -adds a body object and a file or files object to the request object.
+         -The body object contains the values of the text fields of the format
+         - the file or files object contains the files uploaded via the form.
+         used to manage upload file and storage checking file type at server
 
 steps to build express server
    1 create a folder
@@ -405,4 +416,6 @@ steps to build express server
             - import mongoose
             - create object for mongoose Schema class, passing arument as document structure
             - create model using schema
+            - export model
+
 

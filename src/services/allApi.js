@@ -23,3 +23,12 @@ export const googleLoginAPI = async (reqBody)=>{
 //call career api
 //authorised user api  
 //authorised admin api
+//view all books
+//view single book 
+
+
+//---------------------------authorized user api--------------------------
+//upload book - called by profile component
+export const addBookAPI = async(reqBody,reqHeader)=>{
+  return await commonAPI("POST",`${SERVERURL}/add-book`,reqBody,reqHeader)
+}

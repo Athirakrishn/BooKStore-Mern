@@ -26,14 +26,10 @@ const logOut = ()=>{
   setToken("")
   setUserDp("")
   setDropDownStatus(false)
-  navigate('/')
+  navigate('/') 
 }
-
-
   return (
     <>
-
-
       <div className="grid grid-cols-3 p-3">
         {/* logo */}
         <div className='flex items-center'>
