@@ -1,9 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from '../components/Header'
 import Footer from '../../components/Footer'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircleCheck } from '@fortawesome/free-solid-svg-icons'
 import { faSquarePlus } from '@fortawesome/free-regular-svg-icons'
+import { ToastContainer,toast } from 'react-toastify';
+import { addBookAPI } from '../../services/allAPI'
 
 function Profile() {
   const [sellBookStatus, setSellBookStatus] = useState(true)
@@ -15,6 +17,13 @@ function Profile() {
   console.log(bookDetails);
   const [preview, setPreview] = useState("")
   const [previewList, setPreviewList] = useState([])
+  const [token,setToken] = useState("")
+
+  useEffect(()=>{
+    if(sessionStorage.getItem("token")){
+      setToken(sessionStorage.getItem("token"))
+    }
+  },[])
 
   const handleUploadBookImage = (e) => {
     // console.log(e.target.files[0]);
@@ -26,6 +35,58 @@ function Profile() {
     setPreview(url)
     const bookImgArray = previewList
     bookImgArray.push(bookImgArray)
+  }
+
+
+  const handleReset = ()=>{
+    setBookDetails({
+      title:"",author:"",noOfPages:"",imageUrl:"",price:"",discountPrice:"",abstract:"",publisher:"",language:"",isbn:"",category:"",uploadImages:[]
+    })
+    setPreview("")
+    setPreviewList([])
+  }
+
+  const handleBookSubmit = async()=>{
+    const {title,author,noOfPages,imageUrl,price,discountPrice,abstract,publisher,language,isbn,category,uploadImages} = bookDetails
+
+    if(!title || !author || !noOfPages || !imageUrl || !price || !discountPrice || !abstract || !publisher || !language || !isbn || !category || uploadImages.length == 0){
+      toast.info("Please fill the form!!!")
+    }else{
+      //api call
+      const reqHeader = {
+        "Authorization":`Bearer ${token}`
+      }
+      const reqBody = new FormData()
+      //append : reqBody.append(key,value)
+      for(let key in bookDetails){
+        if(key != "uploadImges"){
+          reqBody.append(key,bookDetails[key])
+        }else{
+          bookDetails.uploadImges.forEach(img=>{
+            reqBody.append("uploadImges",img)
+          })
+        }
+      }
+      try{
+        const result = await addBookAPI(reqBody,reqHeader)
+        console.log(result);
+        if(result.status == 401){
+          toast.warning(result.response.data)
+          //clear all field
+          handleReset()
+        }else if(result.status==200){
+          toast.success("Book added successfully!!!")
+          //clear all field
+           handleReset()
+        }else{
+          toast.error('Something went wrong!!!')
+          //clear all field
+           handleReset()
+        }
+      }catch(err){
+        console.log(err);
+      }
+    }
   }
 
   return (
@@ -103,57 +164,40 @@ function Profile() {
                   <div className="mb-3 px-3">
                     <input value={bookDetails.category} onChange={e => setBookDetails({ ...bookDetails, category: e.target.value })} type="text" placeholder='Category' className='w-full p-2  rounded placeholder-gray-400 text-black bg-white' />
                   </div>
-                  <div className="mb-3 flex w-full justify-center">
-                    <label className="flex justify-center items-center mt-10" htmlFor="bookImage">
-                      <input
-                        onChange={(e) => handleUploadBookImage(e)}
-                        type="file"
-                        name="bookImage"
-                        id="bookImage"
-                        className="hidden"
-                      />
-                      {!preview ? <img
-                        src="https://cdn.pixabay.com/photo/2016/01/03/00/43/upload-1118929_1280.png"
-                        width="200px"
-                        height="200px"
-                        alt="book image" />
-                        :
-                        <img
-                          src={preview}
-                          width="200px"
-                          height="200px"
-                          alt="book image" />
-                      }
-
-                    </label>
-
-
-                  </div>
-                  {preview && <div className=" flex w-full justify-center">
-                    {
-                      previewList?.map(imgUrl => (
-                        <img src={imgUrl} width="70px" height="7px" alt="book image" className='hidden'  />
-                      ))
+                  <div className="mb-3 flex justify-center items-center mt-10">
+                  <label htmlFor="bookImage">
+                    <input onChange={e=>handleUploadBookImage(e)} type="file" name="" id="bookImage" className='hidden'/>
+                    { !preview ?
+                      <img src="https://cdn.pixabay.com/photo/2016/01/03/00/43/upload-1118929_1280.png" width={'200px'} height={'200px'} alt="book" />
+                    :
+                    <img src={preview} width={'200px'} height={'200px'} alt="book" />
                     }
-                    { previewList.length>3 &&
-                     <label className="flex justify-center items-center" htmlFor="bookImage">
-                      <input onChange={(e) => handleUploadBookImage(e)} type="file" name="bookImage" id="bookImage" className="hidden" />
-                      <FontAwesomeIcon icon={faSquarePlus} className='fa-2x shadow text-gray-500' />
-
-                    </label>}
-
-
-                  </div>}
+                  </label>
+                </div>
+                {preview && <div className=" flex justify-center items-center ">
+                  {
+                       previewList?.map((imgUrl,index)=>(
+                      <img key={index} src={imgUrl} width={'70px'} height={'70px'} alt="book" className='mx-3' />
+                    ))
+                  }
+                  { previewList.length<3 && <label htmlFor="bookImages">
+                    <input onChange={e=>handleUploadBookImage(e)} type="file" name="" id="bookImages" className='hidden'/>
+                    <FontAwesomeIcon icon={faSquarePlus} className='fa-2x shadow ms-3 text-gray-500'/>
+                  </label>}
+                </div>}
+              </div>
+                  
+                  
 
                 </div>
                 {/* footer */}
-                <div className='flex mdjustify-end w-220 my-4'>
-                  <button className=' rounded bg-green-500 text-white w-30 p-2 m-2'>Reset</button>
-                  <button className=' rounded bg-blue-800 text-white w-30 p-2 m-2' >Submit</button>
+               <div className=" p-3   w-full flex md:justify-end justify-center  mt-8">
+                  <button onClick={handleReset} className="py-2 px-3 rounded bg-gray-600 text-white hover:bg-white hover:border hover:text-black">Reset</button>
+                <button onClick={handleBookSubmit} className="py-2 px-3 rounded bg-blue-900 text-white ms-3 hover:bg-white hover:border hover:text-blue-600 hover:border-blue-600">Submit</button>
                 </div>
               </div>
             </div>
-          </div>
+         
         }
 
 
@@ -222,6 +266,18 @@ function Profile() {
 
 
       <Footer />
+      <ToastContainer
+position="top-right"
+autoClose={3000}
+hideProgressBar={false}
+newestOnTop={false}
+closeOnClick={false}
+rtl={false}
+pauseOnFocusLoss
+draggable
+pauseOnHover
+theme="colored"
+/>
     </>
   )
 }
