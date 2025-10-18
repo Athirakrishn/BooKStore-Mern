@@ -4,7 +4,31 @@ import Footer from '../../components/Footer'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom'
+import { useState } from 'react';
+import { getHomeBooksAPI } from '../../services/allAPI';
+import { useEffect } from 'react';
 function Home() {
+
+  const [homeBooks,setHomeBooks] = useState([])
+
+  useEffect(()=>{
+    getHomeBooks()
+  },[])
+
+  console.log(homeBooks);
+
+
+  const getHomeBooks = async ()=>{
+    try{
+      const result = await getHomeBooksAPI()
+      if(result.status==200){
+        setHomeBooks(result.data)
+      }
+    }catch(err){
+      console.log(err);      
+    }
+  }
+
   return (
     <div>
 <Header/>
@@ -21,21 +45,26 @@ function Home() {
  </div>
 {/* </div> */}
 {/* arrival */}
-<section className='md:px-40 flex flex-col justify-center items-center p-5 '>
+      <section className='md:px-40 p-5 my-5 flex flex-col justify-center items-center'>
   <h1 className='text-2xl'> NEW ARRIVALS</h1>
   <h1 className='text-xl'>Explore Our Largest Collection</h1>
   <div className='md:grid grid-cols-4 w-full mt-5 justify-center items-center '>
- <div className="p-3">
-  <div className="shadow">
-    <img src="https://tse4.mm.bing.net/th/id/OIP.MOw8E6VOioHuq3EPrxM2bQAAAA?pid=Api&P=0&h=180" alt="book" className='w-full' />
-    <div className="flex flex-col justify-center items-center">
-      <p className='text-blue-700 font-bold'>Author</p>
-      <p >Book Title</p>
-       <p>₹566</p>
-    </div>
-    
-  </div>
- </div>
+   {
+            homeBooks.length>0?
+              homeBooks?.map((book,index)=>(
+                <div key={index} className="shadow  rounded p-3 mx-4">
+                  <img width={'100%'} height={'300px'} src={book?.imageUrl} alt="book" />
+                  <div className="flex flex-col justify-center items-center mt-4">
+                    <p className="text-blue-700 font-bold text-lg">{book?.author}</p>
+                    <p >{book?.title}</p>
+                    <p>$ {book?.discountPrice}</p>
+                  </div>
+                </div>
+              ))
+          :
+          <p>Loading ... </p>
+           }
+
 </div>
  <div className="text-center my-5">
       <Link to={'/all-books'} className='bg-blue-600 p-3'>Explore More</Link>
