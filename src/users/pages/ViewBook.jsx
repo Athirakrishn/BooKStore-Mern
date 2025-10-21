@@ -92,12 +92,13 @@ function ViewBook() {
                 Camera click of the book in the hand of seller
               </p>
 
-              <div className="md-flex md:flex-cols-3 flex-wrap my-4">
+                <div className="md:flex flex-wrap my-4  overflow-y-auto ">
                 {/* duplicate images */}
                 {
                   book?.uploadImg?.length > 0 ?
                     book?.uploadImg?.map(img => (
-                      <img width={'250px'} height={'250px'} className='mx-2' src={`${SERVERURL}/uploads /${img}`} alt="book-images" />
+                      <img width={'160px'} height={'160px'} className='mx-2' src={`${SERVERURL}/uploads/${img}`}
+alt="book-images" />
 
                 ))
                 :
