@@ -82,10 +82,10 @@ const logOut = ()=>{
 
         </div>
         <ul className={listStatus ? "flex flex-col" : "justify-center md:flex items-center hidden"}>
-          <li className='md:mx-4 mt-3 md:mt-0'><Link Link to={'/'}>HOME          </Link></li>
-          <li className='md:mx-4 mt-3 md:mt-0'><Link Link to={'/all-books'}>BOOKS</Link></li>
-          <li className='md:mx-4 mt-3 md:mt-0'><Link Link to={'/careers'}>CAREER </Link> </li>
-          <li className='md:mx-4 mt-3 md:mt-0'><Link Link to={'/contact'}>CONTACT</Link> </li>
+          <li className='md:mx-4 mt-3 md:mt-0'><Link  to={'/'}>HOME          </Link></li>
+          <li className='md:mx-4 mt-3 md:mt-0'><Link  to={'/all-books'}>BOOKS</Link></li>
+          <li className='md:mx-4 mt-3 md:mt-0'><Link  to={'/careers'}>CAREER </Link> </li>
+          <li className='md:mx-4 mt-3 md:mt-0'><Link  to={'/contact'}>CONTACT</Link> </li>
         </ul>
       </nav>
 

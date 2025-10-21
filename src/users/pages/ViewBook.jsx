@@ -1,73 +1,129 @@
-import React, { useState } from 'react'
-import Header  from '../components/Header'
+import React, { useEffect, useState } from 'react'
+import Header from '../components/Header'
 import Footer from '../../components/Footer'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBackward, faCamera, faEye, faXmark } from '@fortawesome/free-solid-svg-icons'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
+import { getSingleBooksAPI } from '../../services/allAPI'
+import { ToastContainer, toast } from 'react-toastify';
+import SERVERURL from '../../services/serverUrl'
 
 function ViewBook() {
-  const [modalStatus,setModalStatus] = useState(false)
+  const [modalStatus, setModalStatus] = useState(false)
+  const { id } = useParams()
+  const [book, setBook] = useState({})
+  console.log(book);
+  useEffect(() => {
+    ViewBookDetails()
+  }, [])
+
+  const ViewBookDetails = async () => {
+    const token = sessionStorage.getItem("token")
+    if (token) {
+      const reqHeader = {
+        "Authorization": `Bearer ${token}`
+      }
+      try {
+        const result = await getSingleBooksAPI(id, reqHeader)
+        if (result.status == 200) {
+          setBook(result.data)
+        } else if (result.response.status == 401) {
+          toast.warning(result.response.data)
+        } else {
+          console.log(result);
+
+        }
+
+      } catch (err) {
+        console.log(err);
+
+      }
+    }
+  }
+
   return (
     <>
-<Header/>
-<div className="md:m-10 m-5">
-<div className="border p-5 shadow border-gray-200">
-  <div className="md:grid grid-cols-4">
- <div className="grid-span-1">
-  <img className='w-full' src="https://tse4.mm.bing.net/th/id/OIP.MOw8E6VOioHuq3EPrxM2bQAAAA?pid=Api&P=0&h=180" alt="" />
- </div>
- <div className="col-span-3 mx-5">
-  <div className="m-5 flex justify-between">
-    <h1 className='text-xl font-bold'>Title</h1>
-    <button onClick={()=>setModalStatus(true)}> <FontAwesomeIcon icon={faEye} className='text-gray-400'/></button>
-  </div>
-  
-    <p className='my-3 text-blue-700'>-Author</p>
-<div className='md:grid grid-cols-3 gap-5 my-10'>
-      <p className="font-bold">publisher : demo</p>
-      <p className="font-bold">Language : demo</p>
-      <p className="font-bold">No of pages : demo</p>
-      <p className="font-bold">Seller Mail : demo</p>
-      <p className="font-bold">Real Prize : demo</p>
-      <p className="font-bold">ISBN Prize : demo</p>
-</div>
- 
-<div className="md:my-10 my-4">
-  <p className='font-bold text-lg'>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Esse ab alias recusandae iusto reprehenderit, rem nam, praesentium vero cumque libero aliquam officia in. Consectetur, laborum vel exercitationem cumque nostrum incidunt!</p>
+      <Header />
+      <div className="md:m-10 m-5">
+        <div className="border p-5 shadow border-gray-200">
+          <div className="md:grid grid-cols-4">
+            <div className="grid-span-1">
+              <img className='w-full' src={book?.imageUrl} alt="" />
+            </div>
+            <div className="col-span-3 mx-5">
+              <div className="m-5 flex justify-between">
+                <h1 className='text-xl font-bold'>{book?.title}</h1>
+                <button onClick={() => setModalStatus(true)}> <FontAwesomeIcon icon={faEye} className='text-gray-400' /></button>
+              </div>
 
-</div>
-<div className=' flex justify-end px-3'>
-  <Link to={'/all-books'} className='bg-blue-900 text-white p-2 rounded'>< FontAwesomeIcon icon={faBackward} className='me-3'/>Back</Link>
-  <button className='bg-green-900 text-white p-2 rounded'>Buy $123</button>  
-</div>
- </div>
-  </div>
-</div>
-</div>
-{/* modal */}
-{ modalStatus && <div className='relative z-10 ' onClick={()=>setModalStatus(false)}>
-<div className="bg-gray-500/75 fixed inset-0 transition-opacity">
-<div className="justify-center flex items-center md:min-h-screen">
-<div className='bg-white text-black md:h-100 md:w-200 w-100 rounded'>
-  <div className='bg-black text-white flex justify-between items-center p-3'>
-    <h3>Books Images</h3>
-    <FontAwesomeIcon icon={faXmark} onClick={()=>setModalStatus(false)}/>
-  </div>
-  <p className='text-blue-600 my-5 ml-5'>
-    <FontAwesomeIcon icon={faCamera} className='me-2'/>
-    Camera click of the book in the hand of seller
-  </p>
+              <p className='my-3 text-blue-700'>{book?.author}</p>
+              <div className='md:grid grid-cols-3 gap-5 my-10'>
+                <p className="font-bold">publisher : {book?.publisher}</p>
+                <p className="font-bold"> Language :{book?.languages} </p>
+                <p className="font-bold">No of pages : {book?.noOfPages} </p>
+                <p className="font-bold">Seller Mail :{book?.userMail} </p>
+                <p className="font-bold">Price{book?.price}</p>
+                <p className="font-bold">isbn {book?.isbn}</p>
+              </div>
 
-  <div className="md-flex flex-cols-3 flex-wrap my-4">
-  {/* duplicate images */}
-  <img className=''  style={{width:"250px",height:"250px"}} src=" https://images.pexels.com/photos/1130980/pexels-photo-1130980.jpeg?cs=srgb&dl=assortment-book-bindings-books-1130980.jpg&fm=jpg" alt="book images" />
+              <div className="md:my-10 my-4">
+                <p className='font-bold text-lg'> {book?.abstract}</p>
 
-  </div>
-</div>
-</div>
-</div>
-</div>}
-<Footer/>
+              </div>
+              <div className=' flex justify-end px-3'>
+                <Link to={'/all-books'} className='bg-blue-900 text-white p-2 rounded'>< FontAwesomeIcon icon={faBackward} className='me-3' />Back</Link>
+                <button className='bg-green-900 text-white p-2 rounded'>Buy $123</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* modal */}
+      {modalStatus && <div className='relative z-10 ' onClick={() => setModalStatus(false)}>
+        <div className="bg-gray-500/75 fixed inset-0 transition-opacity">
+          <div className="justify-center flex items-center md:min-h-screen">
+            <div className='bg-white text-black md:h-100 md:w-200 w-100 rounded'>
+              <div className='bg-black text-white flex justify-between items-center p-3'>
+                <h3>Books Images</h3>
+                <FontAwesomeIcon icon={faXmark} onClick={() => setModalStatus(false)} />
+              </div>
+              <p className='text-blue-600 my-5 ml-5'>
+                <FontAwesomeIcon icon={faCamera} className='me-2' />
+                Camera click of the book in the hand of seller
+              </p>
+
+              <div className="md-flex md:flex-cols-3 flex-wrap my-4">
+                {/* duplicate images */}
+                {
+                  book?.uploadImg?.length > 0 ?
+                    book?.uploadImg?.map(img => (
+                      <img width={'250px'} height={'250px'} className='mx-2' src={`${SERVERURL}/uploads /${img}`} alt="book-images" />
+
+                ))
+                :
+                <p>User uploaded book images are unavailable..</p>
+                                        }
+                
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>}
+      <Footer />
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
 
     </>
   )
