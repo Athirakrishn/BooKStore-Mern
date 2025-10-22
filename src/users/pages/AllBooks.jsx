@@ -6,12 +6,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars } from '@fortawesome/free-solid-svg-icons'
 import { getAllBooksAPI } from "../../services/allAPI";
 import { ToastContainer,toast } from 'react-toastify';
+import { set } from "mongoose";
 function AllBooks() {
     const [listStatus,setListStatus] = useState(false)
-  
-     const [token,setToken] = useState("")
-  const [books,setBooks] = useState([])
+    const [token,setToken] = useState("")
+    const [books,setBooks] = useState([])
+  const [tempBooks,setTempBooks] = useState([])
+  const [allCategories,setAllCategories] = useState([])
+  const [searchKey,setSearchKey] = useState("")
 
+  
   console.log(books);
   
   useEffect(()=>{
@@ -20,24 +24,37 @@ function AllBooks() {
       setToken(userToken)
       getAllBooks(userToken)
     }
-  },[])
+  },[searchKey])
 
   const getAllBooks = async (userToken)=>{
     const reqHeader = {
       "Authorization" :`Bearer ${userToken}`
     }
     try{
-      const result = await getAllBooksAPI(reqHeader)
+      const result = await getAllBooksAPI(searchKey,reqHeader)
       if(result.status==200){
         setBooks(result.data)
-      }else{
-        console.log(result);
-        toast.warning(result.response.data)
+        setTempBooks(result.data)
+        const tempCategory = result.data.map(item=>item.category)
+        // console.log(tempCategory);
+        const tempArray = [...new Set(tempCategory)]
+        // console.log(tempArray);
+        setAllCategories(tempArray)
       }
     }catch(err){
       console.log(err);      
     }
   }
+
+  //filtering according to category 
+    const filterBooks = (category)=>{
+    if(category=="No-Filter"){
+     setBooks(tempBooks)
+    }else{
+      setBooks(tempBooks?.filter(item=>item.category.toLowerCase()==category.toLowerCase()))
+    // setBooks(tempBooks?.filter(item=>item.category.toLowerCase().includes(category.toLowerCase())))
+   }
+   }
 
   return (
 <>
@@ -52,8 +69,9 @@ function AllBooks() {
                 type="text"
                 className="p-2  border border-gray-200 text-black w-100 placeholder-gray-600"
                 placeholder="Search By Title"
+                onChange={(e) => setSearchKey(e.target.value)}
               />
-              <button className="bg-blue-900 text-white p-2">Search</button>
+              <button className="bg-blue-900 text-white p-2" >Search</button>
             </div>
           </div>
           {/* grid */}
@@ -64,57 +82,22 @@ function AllBooks() {
                 <h1 className="text-2xl font-semibold">Filter</h1>
                 <button onClick={()=>setListStatus(!listStatus)} className="text-2xl md:hidden"><FontAwesomeIcon icon={faBars} /></button>
               </div>
-              <div className={listStatus?'block':'md:block hidden'}>
+               <div className={listStatus?'block':'md:block hidden'}>
+                {
+                  allCategories?.length>0 &&
+                    allCategories?.map((category,index)=>(
+                      <div key={index} className="mt-3">
+                        <input type="radio" id={category} name="filter" onClick={()=>filterBooks(category)} />
+                        <label className="ms-3" htmlFor={category}>
+                          {category}
+                        </label>
+                      </div>
+                    ))
+                }
+
+             
                 <div className="mt-3">
-                  <input type="radio" id="Literary" name="filter" />
-                  <label className="ms-3" htmlFor="Literary">
-                    Literary Fiction
-                  </label>
-                </div>
-                <div className="mt-3">
-                  <input type="radio" id="Philosophy" name="filter" />
-                  <label className="ms-3" htmlFor="Philosophy">
-                    Philosophy
-                  </label>
-                </div>
-                <div className="mt-3">
-                  <input type="radio" id="Romance" name="filter" />
-                  <label className="ms-3" htmlFor="Romance">
-                    Romance
-                  </label>
-                </div>
-                <div className="mt-3">
-                  <input type="radio" id="Mystery" name="filter" />
-                  <label className="ms-3" htmlFor="Mystery">
-                    Mystery/Thriller
-                  </label>
-                </div>
-                <div className="mt-3">
-                  <input type="radio" id="Politics" name="filter" />
-                  <label className="ms-3" htmlFor="Politics">
-                    Politics
-                  </label>
-                </div>
-                <div className="mt-3">
-                  <input type="radio" id="Self" name="filter" />
-                  <label className="ms-3" htmlFor="Self">
-                    Self-Help
-                  </label>
-                </div>
-                <div className="mt-3">
-                  <input type="radio" id="Biography" name="filter" />
-                  <label className="ms-3" htmlFor="Biography">
-                    Auto/Biography
-                  </label>
-                </div>
-                <div className="mt-3">
-                  <input type="radio" id="Horror" name="filter" />
-                  <label className="ms-3" htmlFor="Horror">
-                    Horror
-                  </label>
-                </div>
-                <div className="mt-3">
-                  <input type="radio" id="noFilter" name="filter" />
+                                  <input type="radio" id="noFilter" name="filter" onClick={()=>filterBooks("No-Filter")} />
                   <label className="ms-3" htmlFor="noFilter">
                     No-Filter
                   </label>

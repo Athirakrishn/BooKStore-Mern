@@ -62,8 +62,10 @@ function ViewBook() {
                 <p className="font-bold"> Language :{book?.languages} </p>
                 <p className="font-bold">No of pages : {book?.noOfPages} </p>
                 <p className="font-bold">Seller Mail :{book?.userMail} </p>
-                <p className="font-bold">Price{book?.price}</p>
-                <p className="font-bold">isbn {book?.isbn}</p>
+                <p className="font-bold">Price : {book?.price}</p>
+                <p className="font-bold">isbn : {book?.isbn}</p>
+                 <p className="font-bold">Category : {book?.category}</p>
+
               </div>
 
               <div className="md:my-10 my-4">

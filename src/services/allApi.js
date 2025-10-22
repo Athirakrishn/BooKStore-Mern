@@ -42,8 +42,8 @@ export const addBookAPI = async(reqBody,reqHeader)=>{
 }
 
 // view all books - called all books when page load
-export const getAllBooksAPI = async (reqHeader)=>{
-  return await  commonAPI("GET",`${SERVERURL}/all-books`,{},reqHeader)
+export const getAllBooksAPI = async (search,reqHeader)=>{
+  return await  commonAPI("GET",`${SERVERURL}/all-books?search=${search}`,{},reqHeader)
 }
 
 
