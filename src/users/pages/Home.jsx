@@ -1,22 +1,43 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import Header from '../components/Header'
 import Footer from '../../components/Footer'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useState } from 'react';
 import { getHomeBooksAPI } from '../../services/allAPI';
 import { useEffect } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import { searchBookContext } from '../../contextAPI/ContextShare'
+
 function Home() {
 
   const [homeBooks,setHomeBooks] = useState([])
+  const navigate = useNavigate()
+
+ const {searchKey,setSearchKey}=useContext(searchBookContext)
 
   useEffect(()=>{
     getHomeBooks()
+    getHomeBooks()
   },[])
 
-  console.log(homeBooks);
-
+  // console.log(homeBooks);
+ const searchBook = ()=>{ 
+  if(!searchKey){
+    toast.warning("please provide book title")
+  }else if(!sessionStorage.getItem("token")){
+    toast.warning("please login to search books")
+    setTimeout(() => {
+      navigate('/login')
+    }, 2500);
+  }else if(sessionStorage.getItem("token")&& searchKey){
+    navigate("/all-books")
+  }
+  else{
+   toast.error("Something went wrong")
+  }
+ }
 
   const getHomeBooks = async ()=>{
     try{
@@ -38,8 +59,8 @@ function Home() {
     <h1 className="text-5xl font-bold"> Wonderful Gifts</h1>
     <p>Give your family and friends a book</p>
     <div className='mt-9 relative'>
-      <input type="text" placeholder='Search Books'className='h-9 w-90 rounded-xl bg-white text-gray-500 '/> 
-      <FontAwesomeIcon icon={faMagnifyingGlass} className='absolute right-5 top-3 text-blue-400'/>
+      <input onChange={e=>setSearchKey(e.target.value)} type="text" placeholder='Search Books'className='h-9 w-90 rounded-xl bg-white text-gray-500 '/> 
+      <FontAwesomeIcon onClick={searchBook} icon={faMagnifyingGlass} className='absolute right-5 top-3 text-blue-400'/>
   </div>
  </div>
 
@@ -102,6 +123,18 @@ function Home() {
   </div>
 </section>
 <Footer/>
+  <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
     </div>
   )
 }

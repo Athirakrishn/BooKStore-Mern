@@ -18,6 +18,7 @@ const Profile = () => {
   const [preview,setPreview] = useState("")
   const [previewList,setPreviewList] = useState([])
   const [token,setToken] = useState("")
+ 
 
   useEffect(()=>{
     if(sessionStorage.getItem("token")){

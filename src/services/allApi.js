@@ -51,3 +51,4 @@ export const getAllBooksAPI = async (search,reqHeader)=>{
 export const getSingleBooksAPI = async (bookId,reqHeader)=>{
   return await  commonAPI("GET",`${SERVERURL}/books/${bookId}/view`,{},reqHeader)
 }
+
