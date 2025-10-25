@@ -1,5 +1,5 @@
 import { faPenToSquare } from '@fortawesome/free-regular-svg-icons'
-import { faWarning, faXmark } from '@fortawesome/free-solid-svg-icons'
+import { faPen, faWarning, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useEffect, useState } from 'react'
 import SERVERURL from '../../services/serverUrl'
@@ -87,31 +87,29 @@ function Edit() {
      </button>
      {/* for offcanvas */}
    { offCanvasStatus && <div> 
-      <div className="fixed inset-0 bg-gray-500/75 w-full h-full transition-opacity">
+      <div className="fixed inset-0 bg-gray-500/75 w-full h-full transition-opacity" onClick={()=>setOffCanvasStatus(false)}>
       </div>
-      <div className="bg-white h-full w-90 z-5 fixed top-0 left-0">
-        <div className="bg-gray-900 px-3 py-4 flex justify-between text-white text-2xl">
+       <div className="bg-white h-full w-90 z-50 fixed top-0 left-0">
+          <div className="bg-gray-900 px-3 py-4 flex justify-between text-white text-2xl">
           <h1>Edit user Profile</h1>
           <FontAwesomeIcon icon={faXmark} onClick={()=>setOffCanvasStatus(false)}/>
         </div>
-        <div className="flex justify-center item-center flex-col my-5">
+       <div className="flex justify-center items-center flex-col my-5">
           <label htmlFor="profilePic">
             <input onChange={e=>handlePictureUpload(e)} type="file" id='profilePic'  style={{display:'none'}}/>
 
           {
-                  existingProfile ==""?
-                  <img className='z-52' style={{ width: '100px', height: '100px', borderRadius: '50p%' }} src={  preview ?preview: "https://www.pngmart.com/files/21/Admin-Profile-Vector-PNG-Clipart.png"} alt="profile" />
-                  :
-                  existingProfile.startsWith("https://lh3.googleusercontent.com") ? <img className='z-52' style={{ width: '100px', height: '100px', borderRadius: '50p%' }} src={existingProfile} alt="profile" />
-                  :
-                  <img className='z-52' style={{ width: '100px', height: '100px', borderRadius: '50p%' }} src={`${SERVERURL}/uploads/${existingProfile}`} alt="profile" />
-                }
-           <button className="bg-yellow-300 z-53 fixed text-white py-3 px-3 rounded" style={{marginLeft:'75px',marginTop:"-28p"}}>
-            <FontAwesomeIcon icon={faPenToSquare}/>
-            </button> 
-          </label>
+                   existingProfile==""?
+                <img className='z-52' style={{width:'150px',height:'150px',borderRadius:'50%'}} src={preview?preview:"https://cdn-icons-png.flaticon.com/512/149/149071.png"} alt="profile" />
+                : existingProfile.startsWith("https://lh3.googleusercontent.com/")?
+                <img className='z-52' style={{width:'150px',height:'150px',borderRadius:'50%'}} src={preview?preview:existingProfile} alt="profile" />
+                :
+                <img className='z-52' style={{width:'150px',height:'150px',borderRadius:'50%'}} src={preview?preview:`${SERVERURL}/uploads/${existingProfile}`} alt="profile" />
+              }
+              <button className="bg-yellow-300 z-53 fixed text-white py-2 px-3 rounded" style={{marginLeft:'75px',marginTop:'-20px'}}> <FontAwesomeIcon icon={faPen}/> </button>
+            </label>
 
-   <div className="mb-3 my-5 w-full px-5">
+   <div className="mt-10 mb-3 my-5 w-full px-5">
     <input value={userDetails.username} onChange={e=>setUserDetails({...userDetails,username:e.target.value})} type="text" placeholder='UserName' className="w-full border border-gray-300 placeholder-gray-500 p-2 rounded" />
    </div>
  <div className="mb-3 my-5 w-full px-5">
@@ -126,7 +124,7 @@ function Edit() {
 
 <div className="flex justify-end w-full ">
     <button onClick={handleReset} className="bg-amber-600 text-white rounded py-3 px-4 hover:text-amber-600 hover:bg-white border" >Reset</button>
-     <button className="bg-green-600 text-white rounded py-3 px-4 hover:text-green-600 hover:bg-white border" >Update</button>
+     <button onClick={handleUpdate} className="bg-green-600 text-white rounded py-3 px-4 hover:text-green-600 hover:bg-white border" >Update</button>
    </div>
 
 
