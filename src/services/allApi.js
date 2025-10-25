@@ -28,11 +28,6 @@ export const getHomeBooksAPI = async ()=>{
 }
 
 
-//call career api
-//authorised user api  
-//authorised admin api
-//view all books
-//view single book 
 
 
 //---------------------------authorized user api--------------------------
@@ -45,7 +40,6 @@ export const addBookAPI = async(reqBody,reqHeader)=>{
 export const getAllBooksAPI = async (search,reqHeader)=>{
   return await  commonAPI("GET",`${SERVERURL}/all-books?search=${search}`,{},reqHeader)
 }
-
 
 //view single book - called by view component when it load in 
 export const getSingleBooksAPI = async (bookId,reqHeader)=>{
@@ -62,7 +56,13 @@ export const getAllUserPurchaseBooksAPI = async (reqHeader)=>{
   return await  commonAPI("GET",`${SERVERURL}/user-bought-books`,{},reqHeader)
 }
 
-//remove user uploaded book
+//remove user uploaded book called by user
 export const removeUserUploadBooksAPI = async (bookId,reqHeader)=>{
   return await  commonAPI("DELETE",`${SERVERURL}/user-books/${bookId}/remove`,{},reqHeader)
 }
+//user profile update 
+export const updateUserProfileAPI = async (reqBody,reqHeader)=>{
+  return await  commonAPI("PUT",`${SERVERURL}/user-profile/edit`,reqBody,reqHeader)
+}
+
+

@@ -7,6 +7,7 @@ import { faSquarePlus } from '@fortawesome/free-regular-svg-icons'
 import { ToastContainer, toast } from 'react-toastify';
 import { addBookAPI, getAllUserPurchaseBooksAPI, getAllUserUploadBooksAPI, removeUserUploadBooksAPI } from '../../services/allAPI'
 import Edit from '../components/Edit'
+import SERVERURL from '../../services/serverUrl'
 
 const Profile = () => {
   const [sellBookStatus, setSellBookStatus] = useState(true)
@@ -81,14 +82,15 @@ const Profile = () => {
     }
   }
 
-
-
   const getAllUserBooks = async () => {
+    console.log("inside getAllUserBooks");
+    
     const reqHeader = {
       "Authorization": `Bearer ${token}`
     }
     try {
       const result = await getAllUserUploadBooksAPI(reqHeader)
+       console.log(result);
       if (result.status == 200) {
         setUserBooks(result.data)
       } else {
@@ -172,7 +174,7 @@ const Profile = () => {
       <Header />
       <div style={{ height: '200px' }} className="bg-black"></div>
       <div style={{ width: '230px', height: '230px', borderRadius: '50%', marginLeft: '70px', marginTop: '-130px' }} className="bg-white p-3">
-        <img style={{ width: '200px', height: '200px', borderRadius: '50%' }} src={userDp==""? "https://cdn-icons-png.flaticon.com/512/149/149071.png" : userDp}alt="profile" />
+        <img style={{ width: '200px', height: '200px', borderRadius: '50%' }} src={userDp==""? "https://cdn-icons-png.flaticon.com/512/149/149071.png" : userDp.startsWith("https://lh3.googleusercontent.com") ? userDp : `${SERVERURL}/uploads/${userDp}`}alt="profile" />
       </div>
       <div className="md:flex justify-between px-20 mt-5">
         <div className="flex  items-center">
@@ -297,7 +299,10 @@ const Profile = () => {
                 </div>
               ))
               :
-              <p>no user books</p>
+              <div className='flex justify-center items-center flex-col'>
+                <img width={'45%'} height={'200px'} src="https://usagif.com/wp-content/uploads/gifs/book-56.gif" alt="book" />
+                <p className='font-bold text-xl'>Books not uploaded yet!!!</p>
+              </div>
             }
           </div>
         }
@@ -328,7 +333,10 @@ const Profile = () => {
               })
 
               :
-              <p>Books are not purchased yet</p>
+             <div className='flex justify-center items-center flex-col'>
+                <img width={'45%'} height={'200px'} src="https://usagif.com/wp-content/uploads/gifs/book-56.gif" alt="book" />
+                <p className='font-bold text-xl'>Books not uploaded yet!!!</p>
+              </div>
             }
           </div>
         }
