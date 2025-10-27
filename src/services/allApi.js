@@ -65,4 +65,8 @@ export const updateUserProfileAPI = async (reqBody,reqHeader)=>{
   return await  commonAPI("PUT",`${SERVERURL}/user-profile/edit`,reqBody,reqHeader)
 }
 
+//all users
+export const getAllUsersAPI = async (reqHeader)=>{
+  return await  commonAPI("GET",`${SERVERURL}/all-user`,{},reqHeader)
+}
 

@@ -21,7 +21,7 @@ function AdminSidebar() {
                 <Link to={'/admin-dashboard'} className='ms-3' htmlFor="literary"><FontAwesomeIcon icon={faHome} />HOME</Link>
               </div>
               <div className="mt-3">
-                <Link to={'/view-book'} className='ms-3' htmlFor="literary"><FontAwesomeIcon icon={faBook} />ALL BOOKS</Link>
+                <Link to={'/admin-resource'} className='ms-3' htmlFor="literary"><FontAwesomeIcon icon={faBook} />ALL BOOKS</Link>
               </div>
               <div className="mt-3">
                 <Link to={'/admin-careers'} className='ms-3' htmlFor="literary"><FontAwesomeIcon icon={faBagShopping} />CAREERS </Link>

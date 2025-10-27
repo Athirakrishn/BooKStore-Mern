@@ -1,11 +1,47 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import AdminHeader from '../components/AdminHeader'
 import Footer from '../../components/Footer'
 import AdminSidebar from '../components/AdminSidebar'
 import { Link } from 'react-router-dom'
+import { getAllUsersAPI } from '../../services/allApi'
+import SERVERURL from '../../services/serverUrl'
 function ResourceAdmin() {
   const [bookListStatus,setBookListStatus] = useState(true)
   const [usersListStatus, setUsersListStatus] = useState(false)
+  const[allUsers,setAllUsers]=useState([])
+console.log(allUsers);
+
+ useEffect(()=>{
+  if(sessionStorage.getItem("token")){
+    const token= sessionStorage.getItem("token")
+    if(bookListStatus==true){
+
+    }else if(usersListStatus==true){
+      getAllUsers(token)
+    }else{
+      console.log("something went wrong");
+      
+    }
+  }
+ },[usersListStatus])
+
+  const getAllUsers = async(userToken)=>{
+    const reqHeader = {
+      "Authorization": `Bearer ${userToken}`
+    }
+    try{
+      const result= await getAllUsersAPI(reqHeader)
+      if(result.status==200){
+        setAllUsers(result.data)
+      }else{
+        console.log(result);
+        
+      }
+    }catch(err){
+      console.log(err);
+      
+    }
+  }
   return (
     <>
       <AdminHeader />
@@ -76,18 +112,29 @@ function ResourceAdmin() {
 
             { usersListStatus &&
         <div className="md:grid  grid-cols-3 w-full justify-center ms-10 ">
-              <div className="shadow rounded p-3 mx-4 w-50 bg-gray-200 ">
-                  <p className=' text-red-600 font-bold'>userId:gfjbf78900</p>
-                <div className="grid grid-cols-2 justify-center items-center">
-                   <img src="https://tse3.mm.bing.net/th/id/OIP.1waDZ8Q2eWBkenMscI08qAHaHa?pid=Api&P=0&h=180" alt="book" className='w-40 ' style={{borderRadius:'50%'}}/>
-                 <div>
-                    <p className='text-blue-700 font-bold'>username</p>
-                    <p >email</p>
+
+
+          {/* duplicate */}
+                  {
+              allUsers?.length>0 ?
+                allUsers?.map((user,index)=>(
+                  <div key={index} className="shadow  rounded p-2 m-2 bg-gray-200">
+                  <p className="text-red-700 font-bold text-md">ID:{user?._id}</p>
+                    <div className='flex  items-center mt-3'> 
+                          <img width={'100px'} height={'100px'} style={{borderRadius:'50%'}} src={user?.profile?`${SERVERURL}/uploads/${user?.profile}`:"https://img.freepik.com/premium-vector/man-character_665280-46970.jpg"} alt="user" />
+                          <div className="flex flex-col  ml-3 w-full">
+                            <p className='text-blue-800 text-lg font-bold'>{user?.username}</p>
+                            <p>{user?.email}</p>
                  </div>
                  
                   
                 </div>
+
         </div>
+        ))
+      :
+      <div>No users</div>
+}
 </div>
             }
         </div>

@@ -1,10 +1,11 @@
 import { faPenToSquare } from '@fortawesome/free-regular-svg-icons'
 import { faPen, faWarning, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import SERVERURL from '../../services/serverUrl'
 import { ToastContainer, toast } from 'react-toastify';
-import { updateUserProfileAPI } from '../../services/allAPI'
+import { updateUserProfileAPI } from '../../services/allApi'
+import { userUpdateContext } from '../../contextAPI/ContextShare'
 
 function Edit() {
   const[offCanvasStatus,setOffCanvasStatus]=useState(false)
@@ -12,6 +13,7 @@ function Edit() {
   const[token,setToken]=useState()
   const [existingProfile,setExistingProfile]=useState()
   const [preview,stepPreview]=useState("")
+  const{setUserEditResponse} = useContext(userUpdateContext)
   useEffect(() => {
     if(sessionStorage.getItem("token")){
       const userToken = sessionStorage.getItem("token")
@@ -59,6 +61,8 @@ function Edit() {
         sessionStorage.setItem("user",JSON.stringify(result.data))
         handleReset()
         setOffCanvasStatus(false)
+        setUserEditResponse(result.data)
+
       }else{
         toast.error("something went wrong")
         console.log(result);
@@ -66,10 +70,11 @@ function Edit() {
     }else{
       const result =  await updateUserProfileAPI({username,password,bio,role,profile:existingProfile},reqHeader)
       if(result.status==200){
-        toast.success("")
+        toast.success("profile updation completed")
         sessionStorage.setItem("user",JSON.stringify(result.data))
         handleReset()
         setOffCanvasStatus(false)
+        setUserEditResponse(result.data)
       }else{
         toast.error("something went wrong")
         console.log(result);
@@ -81,7 +86,7 @@ function Edit() {
   }
 
   return (
-    <>
+    <div>
      <button onClick={()=>setOffCanvasStatus(true)} className="tex-blue-600 border border-blue-600 rounded p-3 hover:text-white">
       <FontAwesomeIcon icon={faPenToSquare}/> Edit
      </button>
@@ -143,7 +148,7 @@ function Edit() {
         pauseOnHover
         theme="colored"
       />
-    </>
+    </div>
   )
 }
 

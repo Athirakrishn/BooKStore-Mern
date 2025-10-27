@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Header from '../components/Header'
 import Footer from '../../components/Footer'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircleCheck, faL } from '@fortawesome/free-solid-svg-icons'
 import { faSquarePlus } from '@fortawesome/free-regular-svg-icons'
 import { ToastContainer, toast } from 'react-toastify';
-import { addBookAPI, getAllUserPurchaseBooksAPI, getAllUserUploadBooksAPI, removeUserUploadBooksAPI } from '../../services/allAPI'
+import { addBookAPI, getAllUserPurchaseBooksAPI, getAllUserUploadBooksAPI, removeUserUploadBooksAPI } from '../../services/allApi'
 import Edit from '../components/Edit'
 import SERVERURL from '../../services/serverUrl'
+import { userUpdateContext } from '../../contextAPI/ContextShare'
 
 const Profile = () => {
   const [sellBookStatus, setSellBookStatus] = useState(true)
@@ -25,7 +26,7 @@ const Profile = () => {
   const [purchaseBooks, setPurchaseBooks] = useState([])
   const [userName, setUserName] = useState("")
   const [userDp, setUserDp] = useState("")
-
+  const {userEditResponse} = useContext(userUpdateContext)
   // console.log(userBooks);
 
   useEffect(() => {
@@ -35,7 +36,7 @@ const Profile = () => {
       setUserName(user.username)
       setUserDp(user.profile)
     }
-  }, [])
+  }, [userEditResponse])
 
   useEffect(() => {
     if (bookStatus == true) {
