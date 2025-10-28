@@ -70,3 +70,13 @@ export const getAllUsersAPI = async (reqHeader)=>{
   return await  commonAPI("GET",`${SERVERURL}/all-user`,{},reqHeader)
 }
 
+//admin books
+export const listAllBooksAPI = async (reqHeader) => {
+    return await commonAPI("GET", `${SERVERURL}/admin-all-books`, {}, reqHeader)
+}
+
+//approve books
+export const updateBookStatusAPI = async (reqBody,reqHeader) => {
+    return await commonAPI("PUT", `${SERVERURL}/admin/book/approve`, reqBody, reqHeader)
+}
+

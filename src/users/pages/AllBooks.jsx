@@ -4,7 +4,7 @@ import Header from '../components/Header'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars } from '@fortawesome/free-solid-svg-icons'
-import { getAllBooksAPI } from "../../services/allAPI";
+import { getAllBooksAPI } from '../../services/allApi'
 import { ToastContainer, toast } from 'react-toastify';
 import { searchBookContext } from "../../contextAPI/ContextShare";
 function AllBooks() {
@@ -109,7 +109,7 @@ function AllBooks() {
                   {
                     books.length > 0 ?
                       books?.map(book => (
-                        <div key={book?._id} className="shadow  rounded p-3 mx-4 my-3">
+                        <div key={book?._id} className="shadow  rounded p-3 mx-4 my-3" hidden={book?.status=='Pending' || book?.status=='Sold'}>
                           <img
                             width={"100%"}
                             height={"300px"}

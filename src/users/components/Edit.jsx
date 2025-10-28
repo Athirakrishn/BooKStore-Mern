@@ -62,7 +62,6 @@ function Edit() {
         handleReset()
         setOffCanvasStatus(false)
         setUserEditResponse(result.data)
-
       }else{
         toast.error("something went wrong")
         console.log(result);
