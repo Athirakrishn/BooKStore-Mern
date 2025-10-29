@@ -350,24 +350,38 @@ MONGOOOS ---------------
 
 
   - syntax: express.Router().httpRequest(path,middleware,HANDLER callback)
-5.Middleware : is a function that can control request response cycle  
-    -several type of middleware
-        - Application-level Middleware :bound to the Express application instance using app.use(middleware) or app.METHOD() functions
-        - Router-level middleware : works similarly to application-level middleware but is bound to an instance of express.Router().httpRequest(path,middleware,HANDLER callback)
-    - Built-in Middleware:
-        -express.json(): Parse JSON request bodies 
-        -express.urlencoded(): Parse URL-encoded request bodies
-        -express.static(): Serve static files
-        -express.Router(): Create modular route handlers
-    -Third-party Middleware
-        -CORS
-
-- Custom Middleware : function middleware-name(req,res,next){ body }
+ 5. Middleware : Is a function that can control request-Response cycle
+        -  several types of middleware:
+            - Application-level Middleware : is bound to the Express application using app.use(middleware) or app.METHOD() functions.
+            - Router-level Middleware : similiar to application specific middleware  but bound to an instance of express.Router().httpRequest(path,middleware,HANDLER callbacks)
+        - Built-in Middleware
+            - express.json(): Parse JSON request bodies
+            - express.urlencoded(): Parse URL-encoded request bodies
+            - express.static(): Serve static files
+            - express.Router(): Create modular route handlers
+        - Third-party Middleware
+            - CORS
+        - Custom Middleware : function middleware-name(req,res,next){ body }
             - req : request object
             - res : response object
             - next() : to pass control to the next middleware function
-   
- 8. Multer
+    6. Authentication & Authorization
+        - Authentication is the process of verifying the identity of a user or system to ensure they are who they claim to be.
+        - Authorization is the process of determining and granting access rights to an authenticated user or system.
+    7. JSON Web Token (JWT)
+        - A JSON Web Token (JWT) is a secure way to send information between a client and a server. 
+        - It is mainly used in web applications and APIs to verify users and prevent unauthorized access. 
+        - A JWT is JSON data secured with a cryptographic signature.
+        - JWT Token Structure : Header. Payload. Signature
+        - JWT token Works
+            - Client request for login
+            - Server send jwt token to client along with the response
+            - Add jwt token with further request from client
+            - server verify token before processing request
+        - Methods
+            - sign(Payload,secret) : used to generate token 
+            - verify(token,secret) : used to verify token
+    8. Multer
         - node.js middleware for handling multipart/form-data
         - Install multer : npm install multer
         - It adds a body object and a file or files object to the request object
@@ -378,6 +392,7 @@ MONGOOOS ---------------
             - using multer define storage location and file type for uploded files
             - to define storage use diskStorage, to apply file filtering using fileFilter
             - export multer with storage & fileFilter
+---------------------------------
 
 steps to build express server
    1 create a folder

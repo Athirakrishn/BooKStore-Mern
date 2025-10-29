@@ -73,14 +73,34 @@ const logOut = ()=>{
         </div>
 
       </div>
+
+      
       <nav className='w-full p-3 bg-black text-white md:flex justify-center items-center '>
         {/* menubar and login */}
         <div className="flex justify-between text-2xl items-center md:hidden ">
           <button onClick={() => setListStatus(!listStatus)} ><FontAwesomeIcon icon={faBars} /></button>
           {/* login link */}
           {/* login link   */}
-          <Link to={'/login'}> <button className='border border-black rounded px-3 py-3 hover:bg-black hover:text-white'><FontAwesomeIcon icon={faUser} className='me-2' /> Login</button> </Link>
+{!token ?
+            <Link to={'/login'}> <button className='border border-black rounded px-3 py-3 hover:bg-black hover:text-white'><FontAwesomeIcon icon={faUser} className='me-2' /> Login</button> </Link>
+  :
+    <div className="relative inline-block text-left">
+       
+                <button 
+                onClick={()=>setDropDownStatus(!dropDownStatus)}
+                className='inline-flex w-full items-center justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs hover:bg-gray-50'>
+                <img width={'40px'} src={userDp == "" ? "https://thumb.ac-illust.com/51/51e1c1fc6f50743937e62fca9b942694_t.jpeg" : userDp.startsWith("https://lh3.googleusercontent.com") ? userDp : `${SERVERURL}/uploads/${userDp}`} alt="user" />
+                </button>
+              { dropDownStatus && <div className='absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-hidden '>
+                <div className="py-1 ">
+                  <Link className='block px-2 py-2 text-sm text-gray-700' to={'/profile'}> <FontAwesomeIcon icon={faAddressCard} className='me-2'/> Profile
+                  </Link>
+                  <button onClick={logOut} className='block px-2 py-2 text-sm text-gray-700'><FontAwesomeIcon icon={faPowerOff} className='me-2'/>Logout</button>
+                </div>
+               </div>}
 
+             </div>
+}         
         </div>
         <ul className={listStatus ? "flex flex-col" : "justify-center md:flex items-center hidden"}>
           <li className='md:mx-4 mt-3 md:mt-0'><Link  to={'/'}>HOME          </Link></li>

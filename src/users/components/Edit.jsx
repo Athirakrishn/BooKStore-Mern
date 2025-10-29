@@ -34,7 +34,7 @@ function Edit() {
      const user = JSON.parse(sessionStorage.getItem("user"))
       setUserDetails({username:user.username,password:user.password,cpassword:user.password,bio:user.bio,role:user.role})
       setExistingProfile(user.profile)
-       stepPreview("  ")
+       stepPreview("")
   }
   
   const handleUpdate = async ()=>{

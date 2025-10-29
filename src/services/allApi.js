@@ -80,3 +80,8 @@ export const updateBookStatusAPI = async (reqBody,reqHeader) => {
     return await commonAPI("PUT", `${SERVERURL}/admin/book/approve`, reqBody, reqHeader)
 }
 
+//admin profile update - call from admin setting component when update button click
+export const updateAdminProfileAPI = async (reqBody,reqHeader)=>{
+  return await  commonAPI("PUT",`${SERVERURL}/admin-profile/edit`,reqBody,reqHeader)
+}
+

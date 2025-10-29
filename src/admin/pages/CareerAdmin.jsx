@@ -5,6 +5,7 @@ import Footer from '../../components/Footer';
 import { Link, Links } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLocationDot, faSquareArrowUpRight, faTrash } from '@fortawesome/free-solid-svg-icons';
+import AddJob from '../components/AddJob';
 
 function CareerAdmin() {
   const [jobListStatus, setJobListStatus] = useState(true)
@@ -38,7 +39,9 @@ function CareerAdmin() {
                   <input type="text" placeholder='Job Title' className='h-10 ' />
                   <button className='text-white bg-blue-600 md:w-50 w-30 h-10'>Search </button>
                 </div>
-                <button className='font-bold mx-10'>Add</button>
+                <button className='font-bold mx-10'>
+                  <AddJob/>
+                </button>
               </div>
               <div className=" md:mx-45 bg-white shadow rounded p-5">
                 <div className="flex justify-between items-center border-b pb-2 mb-4">

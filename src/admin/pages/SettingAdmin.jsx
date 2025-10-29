@@ -1,12 +1,86 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import AdminHeader from '../components/AdminHeader'
 import AdminSidebar from '../components/AdminSidebar'
-import Footer from '../../components/Footer'
+import Footer from '../../components/Footer' 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPen } from '@fortawesome/free-solid-svg-icons'
+import { adminUpdateContext } from '../../contextAPI/ContextShare'
+import SERVERURL from '../../services/serverUrl'
+import { toast, ToastContainer } from 'react-toastify'
+import { updateAdminProfileAPI } from '../../services/allApi'
 function SettingAdmin() {
-        const [listStatus,setListStatus] = useState(false)
+        const [adminDetails, setAdminDetails] = useState({ username: "", password: "" ,cpassword:"",bio:"",profile:"",role:""})
+        const[token,setToken]=useState()
+        const [existingProfile,setExistingProfile]=useState()
+        const [preview,setPreview]=useState("")
+        const{setAdminEditResponse} = useContext(adminUpdateContext)  
+        
+          useEffect(() => {
+            if(sessionStorage.getItem("token")){
+              const userToken = sessionStorage.getItem("token")
+              setToken(userToken)
+              const user = JSON.parse(sessionStorage.getItem("user"))
+              setAdminDetails({username:user.username,password:user.password,cpassword:user.password,bio:user.bio,role:user.role})
+              setExistingProfile(user.profile)
+            }   
+          }, [])
   
+    const handlePictureUpload = (e)=>{
+    setAdminDetails({...adminDetails,profile:e.target.files[0]})
+    const url = URL.createObjectURL(e.target.files[0])
+    setPreview(url)
+  }
+
+   const handleReset=()=>{
+     const user = JSON.parse(sessionStorage.getItem("user"))
+      setAdminDetails({username:user.username,password:user.password,cpassword:user.password,bio:user.bio,role:user.role})
+      setExistingProfile(user.profile)
+       setPreview("")
+  }
+
+ const handleUpdate = async () => {
+        const { username, password, cpassword } = adminDetails
+        if (!username || !password || !cpassword) {
+            toast.info("Please fill the form completely")
+        } else {
+            if (password != cpassword) {
+                toast.warning("Password & Confirm Password must be the same")
+            } else {
+                const reqHeader = {
+                    "Authorization": `Bearer ${token}`
+                }
+                const reqBody = new FormData()
+                if(preview){
+                     for (let key in adminDetails){
+                        reqBody.append(key,adminDetails[key])
+                     }
+                     const result = await updateAdminProfileAPI(reqBody,reqHeader)
+                     if(result.status == 200){
+                        toast.success("Profile Updated Succesfully")
+                        sessionStorage.setItem("user",JSON.stringify(result.data))
+                        handleReset()
+                     }else{
+                        toast.error("Something went wrong")
+                        console.log(result);
+                        
+                     }
+                }else{
+                    const result = await updateAdminProfileAPI({username,password,cpassword,profile:existingProfile},reqHeader)
+                     if(result.status == 200){
+                        toast.success("Profile Updated Successfully")
+                        sessionStorage.setItem("user",JSON.stringify(result.data))
+                        setAdminEditResponse(result.data)
+                        handleReset()
+                     }else{
+                        toast.error("Something went wrong")
+                        console.log(result);
+                        
+                     }
+                }
+            }
+        }
+    }
+
   return (
     <>
 <AdminHeader/>
@@ -15,36 +89,9 @@ function SettingAdmin() {
     <AdminSidebar/>
   </div>
   <div className="col-span-4 ms-12 ">
-     <h1 className="font-2xl font-bold text-center my-10">
-      settings
-     </h1>
-
-     {/* <div className="md-grid grid-cols-2 gap-x-5 m-5">
-     <div*>
-        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Officia molestias, repudiandae qui voluptates dolorum eligendi accusamus dolores rerum perferendis, sequi architecto voluptatem et autem quidem esse corporis quae consectetur nisi. Accusantium vel odio nihil architecto aut porro ducimus distinctio sunt dolores, totam rerum voluptatem minus error doloribus necessitatibus praesentium eius fugiat ipsa dolor! Quae illum dicta corporis qui facere excepturi neque unde quis sint laudantium ut eaque exercitationem dolor non autem nihil, quam repellendus voluptatibus inventore aperiam? Corporis quaerat, delectus nulla explicabo debitis possimus ut nesciunt, reprehenderit, excepturi animi reiciendis tempora quisquam eius facere tenetur error itaque atque aliquid. Nihil architecto quaerat mollitia molestiae quos, iusto iste omnis, iure excepturi eveniet sapiente. Tenetur iste ipsam obcaecati quibusdam temporibus quo voluptatem doloremque quisquam, tempora asperiores consequuntur aliquam non autem fugiat nihil quidem perspiciatis nostrum voluptatum amet esse nulla sit sed ipsum? Tempore officia et rem. Officia, consequuntur iure alias nihil nulla, praesentium deleniti nesciunt quasi asperiores dicta magnam optio eveniet temporibus architecto vel ipsam, voluptatem amet iusto necessitatibus culpa laborum beatae. Itaque, dignissimos ducimus atque neque, consequuntur, quo adipisci nulla accusamus sapiente exercitationem mollitia. Possimus earum aspernatur temporibus, soluta nobis eum sit porro culpa quasi odit fugiat beatae, eos ex tenetur?</p>
-        
-     </div*
-     {/* <div className='rounded bg-blue-100 p-5 flex justify-center itmes-center'>
-      <label htmlFor="admin pic "><img  src="https://static.vecteezy.com/system/resources/previews/019/879/186/original/user-icon-on-transparent-background-free-png.png" alt="" style={{height:"200px",width:"200px",borderRadius:"50%"}}/>
-     
-        <FontAwesomeIcon icon={faPen}  style={{marginLeft:'140px',marginTop:'-150px'}} className='bg-yellow-400 p-1 text-white rounded '/>
-   
-      <input type="file" name='' id='admin pic' className='hidden'/>
-      </label>
-
-     <div className="mb-3 w-full grid grid-col">
-       <input className='bg-white my-1 mx-2 rounded w-80' type="text"  placeholder='User Name'/>
-      <input className='bg-white my-1 mx-2 rounded w-80' type="password" placeholder='Password'/>
-       <input className='bg-white my-1 mx-2 rounded w-80 ' type="password"  placeholder='confirm password'/>
-       <div className='mb-3 w-full flex justify-evenly'>
-<button className='rounded bg-red-700 w-20'>reset</button>
-<button className='rounded bg-green-700 w-20'>Update</button>
-       </div>
-     </div>
-     </div>
-     </div>
-     </div> */} 
-
+     <h1 className="text-4xl font-bold text-center my-10">
+      Settings
+     </h1> 
 
      <div className="grid md:grid-cols-2 gap-5 m-5">
   <div>
@@ -55,40 +102,45 @@ function SettingAdmin() {
 
 
   <div className="rounded bg-blue-100 p-5 flex flex-col items-center">
-
+          <input type="file" id="admin-pic" className="hidden" onChange={e=>handlePictureUpload(e)} />
     <label htmlFor="admin-pic" className="relative">
-      <img
-        src="https://static.vecteezy.com/system/resources/previews/019/879/186/original/user-icon-on-transparent-background-free-png.png"
-        alt="User profile"
-        className="h-52 w-52 rounded-full"
-      />
+         {
+                   existingProfile==""?
+                <img className='z-52' style={{width:'150px',height:'150px',borderRadius:'50%'}} src={preview?preview:"https://cdn-icons-png.flaticon.com/512/149/149071.png"} alt="profile" />
+                 
+                :
+                <img className='z-52' style={{width:'150px',height:'150px',borderRadius:'50%'}} src={preview?preview:`${SERVERURL}/uploads/${existingProfile}`} alt="profile" />
+              }
       <FontAwesomeIcon
         icon={faPen}
         className="absolute bottom-4 right-4 bg-yellow-400 p-2 text-white rounded cursor-pointer"
       />
-      <input type="file" id="admin-pic" className="hidden" />
+  
     </label>
 
     <div className="mt-5 w-full grid grid-cols-1 items-center">
       <input
+        value={adminDetails.username} onChange={e=>setAdminDetails({...adminDetails,username:e.target.value})}
         className="bg-white my-2 mx-auto rounded w-80 p-2 border"
         type="text"
         placeholder="User Name"
       />
       <input
+          value={adminDetails.password} onChange={e=>setAdminDetails({...adminDetails,password:e.target.value})}
         className="bg-white my-2 mx-auto rounded w-80 p-2 border"
-        type="password"
+        type="text"
         placeholder="Password"
       />
       <input
+      value={adminDetails.cpassword} onChange={e=>setAdminDetails({...adminDetails,cpassword:e.target.value})}
         className="bg-white my-2 mx-auto rounded w-80 p-2 border"
-        type="password"
+        type="text"
         placeholder="Confirm Password"
       />
 
       <div className="mt-3 flex justify-evenly w-full">
-        <button className="rounded bg-red-700 text-white px-4 py-2">Reset</button>
-        <button className="rounded bg-green-700 text-white px-4 py-2">Update</button>
+        <button className="rounded bg-red-700 text-white px-4 py-2" onClick={handleReset}>Reset</button>
+        <button  className="rounded bg-green-700 text-white px-4 py-2"onClick={handleUpdate} >Update</button>
       </div>
     </div>
   </div>
@@ -97,6 +149,18 @@ function SettingAdmin() {
   </div>
  </div>
  <Footer/>
+   <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
     </>
   )
 }
