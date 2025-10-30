@@ -6,10 +6,55 @@ import { Link, Links } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLocationDot, faSquareArrowUpRight, faTrash } from '@fortawesome/free-solid-svg-icons';
 import AddJob from '../components/AddJob';
+import { getAllJobAPI, removeJobAPI } from '../../services/allApi'
+import { useEffect } from 'react'
 
 function CareerAdmin() {
   const [jobListStatus, setJobListStatus] = useState(true)
   const [listApplicationStatus, setListApplicationStatus] = useState(true)
+    const [allJobs,setAllJobs] = useState([])
+  const [searchKey,setSearchKey] = useState("")
+  const [deleteJobResponse,setDeleteJobResponse] =useState({})
+
+  console.log(allJobs);
+
+  useEffect(()=>{
+    if(jobListStatus==true){
+      getAllJobs()
+    }
+  },[searchKey,deleteJobResponse])
+  
+  const getAllJobs = async ()=>{
+    try{
+      const result = await getAllJobAPI(searchKey)
+      if(result.status==200){
+        setAllJobs(result.data)
+      }
+    }catch(err){
+      console.log(err);      
+    }
+  }
+
+  const removeJob = async (id)=>{
+    const token = sessionStorage.getItem("token")
+  
+    if(token){
+      const reqHeader = {
+        "Authorization":`Bearer ${token}`
+      }
+      try{
+        const result = await removeJobAPI(id,reqHeader)
+        if(result.status==200){
+          setDeleteJobResponse(result.data)
+        }else{
+          console.log(result);
+        }
+      }catch(err){
+        console.log(err);
+        
+      }
+    }
+  }
 
   return (
     <>
@@ -36,44 +81,43 @@ function CareerAdmin() {
             <div>
               <div className="flex justify-between  ">
                 <div className='md:mx-80 grid grid-cols-2  justify-center items-center text-center md:w-200 w-100'>
-                  <input type="text" placeholder='Job Title' className='h-10 ' />
+                  <input  onChange={e=>setSearchKey(e.target.value)} type="text" placeholder='Job Title' className='h-10 ' />
                   <button className='text-white bg-blue-600 md:w-50 w-30 h-10'>Search </button>
                 </div>
                 <button className='font-bold mx-10'>
-                  <AddJob/>
+              <AddJob/>
                 </button>
               </div>
               <div className=" md:mx-45 bg-white shadow rounded p-5">
-                <div className="flex justify-between items-center border-b pb-2 mb-4">
-                  <h3 className="font-semibold text-lg">Job Title</h3>
-                  <button className="bg-white-600 text-red-600 px-4 py-2 rounded-md hover:bg-red-700 hover:text-white-500 flex items-center gap-1">
-                    Delete
-                    <FontAwesomeIcon size='2x' icon={faTrash} onClick={() => setCareerModal(true)} /></button>
-                </div>
+              
 
                 {/* Job Details */}
-                <div className="space-y-2 text-sm text-gray-700">
-                  <p className="flex items-center gap-2">
-                    <FontAwesomeIcon icon={faLocationDot} className="text-blue-500" /> Location
-                  </p>
-                  <p>
-                    <span className="font-semibold">Job Type:</span> Senior Level
-                  </p>
-                  <p>
-                    <span className="font-semibold">Salary:</span> 10 lakhs
-                  </p>
-                  <p>
-                    <span className="font-semibold">Qualification:</span> M-Tech /B-Tech/BCA/MCA
-                  </p>
-                  <p>
-                    <span className="font-semibold">Experience:</span> 5-7
-                  </p>
-                </div>
+            
 
-                {/* Description */}
-                <p className="mt-4 text-gray-600 text-sm ">
-                  Description : Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                </p>
+{
+              allJobs?.length>0 ?
+                allJobs?.map(job=>(
+                  <div key={job?._id} className="border border-gray-200 p-5 shadow my-5">
+                    <div className="flex mb-5 ">
+                      <div className='w-full'>
+                        <h1 className="text-xl font-bold">{job?.title}</h1>
+                        <hr />
+                      </div>
+                      <button onClick={()=>removeJob(job?._id)} className="bg-red-900 text-white p-3 ms-5 flex items-center">Delete <FontAwesomeIcon icon={faTrash} className='ms-2'/></button>
+                    </div>
+                    <p className='text-lg text-blue-700 my-2'><FontAwesomeIcon icon={faLocationDot} /> {job?.location}</p>
+                    <p className='text-lg my-2'>Job Type : {job?.jobType}</p>
+                    <p className='text-lg my-2'>Salary : {job?.salary}</p>
+                    <p className='text-lg my-2'>Qualification : {job?.qualification}</p>
+                    <p className='text-lg my-2'>Experience : {job?.experience}</p>
+                    <p className='text-lg my-2'>Description : {job?.description}</p>
+                  </div>
+                ))
+              :
+              <p>No Job Openings....</p>
+            }
+
+
               </div>
             </div>
 

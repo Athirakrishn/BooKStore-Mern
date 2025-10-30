@@ -85,3 +85,17 @@ export const updateAdminProfileAPI = async (reqBody,reqHeader)=>{
   return await  commonAPI("PUT",`${SERVERURL}/admin-profile/edit`,reqBody,reqHeader)
 }
 
+
+// all job api
+export const getAllJobAPI = async (searchKey)=>{
+  return await  commonAPI("GET",`${SERVERURL}/all-jobs?search=${searchKey}`)
+}
+
+// add job 
+export const addJobAPI = async (reqBody,reqHeader)=>{
+  return await  commonAPI("POST",`${SERVERURL}/add-job`,reqBody,reqHeader)
+}
+// delete job 
+export const removeJobAPI = async (jobId,reqHeader)=>{
+  return await  commonAPI("DELETE",`${SERVERURL}/job/${jobId}/remove`,{},reqHeader)
+}
