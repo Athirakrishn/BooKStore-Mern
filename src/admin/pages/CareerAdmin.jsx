@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState,useContext } from 'react'
 import AdminHeader from '../components/AdminHeader';
 import AdminSidebar from '../components/AdminSidebar';
 import Footer from '../../components/Footer';
@@ -8,8 +8,11 @@ import { faLocationDot, faSquareArrowUpRight, faTrash } from '@fortawesome/free-
 import AddJob from '../components/AddJob';
 import { getAllJobAPI, removeJobAPI } from '../../services/allApi'
 import { useEffect } from 'react'
+import { jobContext } from '../../contextAPI/ContextShare';
 
 function CareerAdmin() {
+    const{addJobResponse,setAddJobResponse} = useContext(jobContext)
+  
   const [jobListStatus, setJobListStatus] = useState(true)
   const [listApplicationStatus, setListApplicationStatus] = useState(true)
     const [allJobs,setAllJobs] = useState([])
@@ -22,7 +25,7 @@ function CareerAdmin() {
     if(jobListStatus==true){
       getAllJobs()
     }
-  },[searchKey,deleteJobResponse])
+  },[searchKey,deleteJobResponse,addJobResponse])
   
   const getAllJobs = async ()=>{
     try{
