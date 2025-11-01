@@ -1,15 +1,18 @@
 import { faEye, faEyeSlash, faUser } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { useState } from 'react'
+import { useContext,useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { ToastContainer ,toast} from 'react-toastify'
 import { registerAPI ,loginAPI, googleLoginAPI} from '../services/allApi'
 import { GoogleLogin} from '@react-oauth/google';
 import { jwtDecode } from "jwt-decode";
+import { userAuthContext } from '../contextAPI/AuthContext';
+
 
 
 
 function Auth({ register }) {
+    const {role,authorisedUser,setAuthorisedUser} = useContext(userAuthContext)
   const navigate = useNavigate()
   const [userDetails, setUserDetails] = useState({ username: "", email: "", password: "" })
   const [viewPasswordStatus, setViewPasswordStatus] = useState(false)
@@ -61,6 +64,7 @@ function Auth({ register }) {
           toast.success("Login Successfully...!!")
           sessionStorage.setItem("user",JSON.stringify(result.data.user))
           sessionStorage.setItem("token",result.data.token)
+           setAuthorisedUser(true)
           setTimeout(() => {
             if(result.data.user.role=="admin"){
               navigate('/admin-dashboard')

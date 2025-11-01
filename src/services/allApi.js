@@ -26,6 +26,10 @@ export const googleLoginAPI = async (reqBody)=>{
 export const getHomeBooksAPI = async ()=>{
   return await  commonAPI("GET",`${SERVERURL}/home-books`)
 }
+// add application - called by career user component
+export const addApplicationAPI = async (reqBody,reqHeader)=>{
+  return await  commonAPI("POST",`${SERVERURL}/application/add`,reqBody,reqHeader)
+}
 
 
 
@@ -86,6 +90,8 @@ export const updateAdminProfileAPI = async (reqBody,reqHeader)=>{
 }
 
 
+//
+
 // all job api
 export const getAllJobAPI = async (searchKey)=>{
   return await  commonAPI("GET",`${SERVERURL}/all-jobs?search=${searchKey}`)
@@ -98,4 +104,10 @@ export const addJobAPI = async (reqBody,reqHeader)=>{
 // delete job 
 export const removeJobAPI = async (jobId,reqHeader)=>{
   return await  commonAPI("DELETE",`${SERVERURL}/job/${jobId}/remove`,{},reqHeader)
+}
+
+
+// list application - called by admin career compoennt 
+export const getAllApplicationAPI = async (reqHeader)=>{
+  return await  commonAPI("GET",`${SERVERURL}/all-applications`,{},reqHeader)
 }

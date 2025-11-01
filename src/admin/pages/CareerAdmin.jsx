@@ -6,9 +6,10 @@ import { Link, Links } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLocationDot, faSquareArrowUpRight, faTrash } from '@fortawesome/free-solid-svg-icons';
 import AddJob from '../components/AddJob';
-import { getAllJobAPI, removeJobAPI } from '../../services/allApi'
+import { getAllApplicationAPI, getAllJobAPI, removeJobAPI } from '../../services/allApi'
 import { useEffect } from 'react'
 import { jobContext } from '../../contextAPI/ContextShare';
+import SERVERURL from '../../services/serverUrl';
 
 function CareerAdmin() {
     const{addJobResponse,setAddJobResponse} = useContext(jobContext)
@@ -18,15 +19,38 @@ function CareerAdmin() {
     const [allJobs,setAllJobs] = useState([])
   const [searchKey,setSearchKey] = useState("")
   const [deleteJobResponse,setDeleteJobResponse] =useState({})
-
-  console.log(allJobs);
+  const[application,setApplication]=useState([])
+  // console.log(allJobs);
+console.log(application);
 
   useEffect(()=>{
     if(jobListStatus==true){
       getAllJobs()
+    }else if(listApplicationStatus==true){
+      getApplications()
     }
-  },[searchKey,deleteJobResponse,addJobResponse])
+  },[searchKey,deleteJobResponse,addJobResponse,listApplicationStatus])
   
+
+
+const getApplications = async ()=>{
+    const token = sessionStorage.getItem("token")
+  
+    if(token){
+      const reqHeader = {
+        "Authorization":`Bearer ${token}`
+      }
+      //api call
+      const result = await getAllApplicationAPI(reqHeader)
+      if(result.status==200){
+        setApplication(result.data)
+      }else{
+        console.log(result);        
+      }
+    }
+  }
+
+
   const getAllJobs = async ()=>{
     try{
       const result = await getAllJobAPI(searchKey)
@@ -141,16 +165,25 @@ function CareerAdmin() {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td className='border border-gray-500 p-3 text-center'>1</td>
-                    <td className='border border-gray-500 p-3 text-center'>front end developer</td>
-                    <td className='border border-gray-500 p-3 text-center'>max miller</td>
-                    <td className='border border-gray-500 p-3 text-center'>BCA</td>
-                    <td className='border border-gray-500 p-3 text-center'>max@gmail.com</td>
-                    <td className='border border-gray-500 p-3 text-center'>90909 09000</td>
-                    <td className='border border-gray-500 p-3 text-center'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis veniam, vitae tenetur maxime, error deleniti, distinctio corrupti accusantium alias dicta commodi! Quaerat, autem! Molestiae quod ea voluptatibus maxime voluptas inventore.</td>
-                    <td className='border border-gray-500 p-3 text-center'><Link className="text-blue-500 underline">Resume</Link></td>
-                  </tr>
+                 
+
+{
+                  application?.length>0?
+                    application?.map((item,index)=>(
+                       <tr key={item?._id}>
+                        <td className="border border-gray-500 p-3 text-center">{index+1}</td>
+                        <td className="border border-gray-500 p-3 text-center">{item?.jobTitle}</td>
+                        <td className="border border-gray-500 p-3 text-center">{item?.fullname}</td>
+                        <td className="border border-gray-500 p-3 text-center">{item?.qualification}</td>
+                        <td className="border border-gray-500 p-3 text-center">{item?.email}</td>
+                        <td className="border border-gray-500 p-3 text-center">{item?.phone}</td>
+                        <td className="border border-gray-500 p-3 text-center">{item?.coverLetter}</td>
+                        <td className="border border-gray-500 p-3 text-center"><Link  className="text-blue-600 underline" to={`${SERVERURL}/pdf/${item?.resume}`} target='_blank'>Resume</Link></td>
+                       </tr>
+                    ))
+                  :
+                  <tr><p>No Applications are available</p></tr>
+                 }
                 </tbody>
               </table>
             </div>

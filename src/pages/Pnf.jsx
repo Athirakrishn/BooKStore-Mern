@@ -1,7 +1,19 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { useContext } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { userAuthContext } from '../contextAPI/AuthContext'
 
 function Pnf() {
+    const {role,authorisedUser,setAuthorisedUser} = useContext(userAuthContext)
+  const navigate = useNavigate()
+  const handleHome = ()=>{
+    if(role){
+     role=="user" && navigate('/')
+     role=="admin" && navigate('/admin-dashboard')
+    }else{
+      navigate('/')
+    }
+  }
   return (
    <>
    
@@ -10,7 +22,7 @@ function Pnf() {
  <h1 className='md:mx-70 text-xl'>OH NO!</h1>
  <h1 className='md:mx-70 text-4xl font-bold'>Look Like You are Lost</h1>
  <h1 className='md:mx-70 text-xl semi-bold my-4' >The page you are looking for is not available</h1>
- <Link to={'/'} className='bg-blue-600 text-white md:w-100 p-3 rounded '>BACK HOME</Link>
+<button onClick={handleHome} className="bg-blue-900 text-white rounded p-2 my-5">Back Home</button>
    </div>
  
    </>

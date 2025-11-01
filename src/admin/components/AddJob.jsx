@@ -17,7 +17,7 @@ const handleReset = ()=>{
 }
 
   const handleAddJob = async(e)=>{
-    e.preventDefault()
+    e.preventDefault( )
   const token = sessionStorage.getItem("token")
   const {title,location,jobType,salary,qualification,experience,description}=newJob
   if(!title|| !location|| !jobType || !salary || !qualification || !experience || !description){
