@@ -4,9 +4,10 @@ import Footer from '../../components/Footer'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBackward, faCamera, faEye, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { Link, useParams } from 'react-router-dom'
-import { getSingleBooksAPI } from '../../services/allAPI'
+import { getSingleBooksAPI } from '../../services/allApi'
 import { ToastContainer, toast } from 'react-toastify';
 import SERVERURL from '../../services/serverUrl'
+import {loadStripe} from '@stripe/stripe-js';
 
 function ViewBook() {
   const [modalStatus, setModalStatus] = useState(false)
@@ -41,6 +42,15 @@ function ViewBook() {
     }
   }
 
+  //payment
+ const handlePayment = async()=>{
+  console.log("inside handle payment");
+  //stripe object
+  const stripe = await loadStripe('pk_test_51SPbdoGaflwvq4TvAEswVmvPp3RX5GmM5mBtm4KOKTQL9pmnpw1uTdJRvy3kX5X2m6sM1Fb7fcfg1RnWiXmt4Wi400RxsvELdC');
+//  console.log(stripe);
+ 
+ }
+
   return (
     <>
       <Header />
@@ -74,7 +84,7 @@ function ViewBook() {
               </div>
               <div className=' flex justify-end px-3'>
                 <Link to={'/all-books'} className='bg-blue-900 text-white p-2 rounded'>< FontAwesomeIcon icon={faBackward} className='me-3' />Back</Link>
-                <button className='bg-green-900 text-white p-2 rounded'>Buy $123</button>
+                <button onClick={handlePayment} className='bg-green-900 text-white p-2 rounded'>Buy $123</button>
               </div>
             </div>
           </div>

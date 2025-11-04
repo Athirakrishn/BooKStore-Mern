@@ -15,6 +15,8 @@ import  SettingAdmin from './admin/pages/SettingAdmin'
 import Pnf from './pages/Pnf'
 import AdminDashBoard from './admin/pages/AdminDashBoard'
 import { userAuthContext } from './contextAPI/AuthContext'
+import PaymentSuccess from './users/pages/PaymentSuccess'
+import PaymentError from './users/pages/PaymentError'
 
 function App() {
  const [loading,setLoading]= useState(true)
@@ -40,6 +42,8 @@ function App() {
            
     <Route path='/books/:id/view' element={<ViewBook/>}/>
     <Route path='/profile' element={<Profile/>}/>
+      <Route path='/payment-success' element={<PaymentSuccess/>}/>
+      <Route path='/payment-Error' element={<PaymentError/>}/>
           </>
         }
         
@@ -50,12 +54,6 @@ function App() {
     <Route path='/admin-careers' element={<CareerAdmin/>}/>
     <Route path='/admin-settings' element={<SettingAdmin/>}/>
         </>}
-
-
-
-
-
-   
 
     <Route path='/*' element={<Pnf/>}/>
    </Routes>
