@@ -26,7 +26,6 @@ function Auth({ register }) {
       toast.info("please fill the form completely")
 
     else {
-      // toast.success("Proceed to api call")
       try{
         const result = await registerAPI(userDetails)
         console.log(result);

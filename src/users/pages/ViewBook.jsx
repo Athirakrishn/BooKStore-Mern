@@ -4,7 +4,7 @@ import Footer from '../../components/Footer'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBackward, faCamera, faEye, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { Link, useParams } from 'react-router-dom'
-import { getSingleBooksAPI } from '../../services/allApi'
+import { getSingleBooksAPI, makePaymentAPI } from '../../services/allApi'
 import { ToastContainer, toast } from 'react-toastify';
 import SERVERURL from '../../services/serverUrl'
 import {loadStripe} from '@stripe/stripe-js';
@@ -47,8 +47,27 @@ function ViewBook() {
   console.log("inside handle payment");
   //stripe object
   const stripe = await loadStripe('pk_test_51SPbdoGaflwvq4TvAEswVmvPp3RX5GmM5mBtm4KOKTQL9pmnpw1uTdJRvy3kX5X2m6sM1Fb7fcfg1RnWiXmt4Wi400RxsvELdC');
-//  console.log(stripe);
- 
+ console.log(stripe);
+//req-body book reqHeader token
+const token = sessionStorage.getItem("token")
+ if(token){
+  const reqHeader = {
+      "Authorization": `Bearer ${token}`
+    }
+    try{
+      const result = await makePaymentAPI(book,reqHeader)
+console.log(result);
+const checkoutSessionURL = result.data.checkoutSessionURL
+ if(checkoutSessionURL){
+  //rediredct
+  window.location.href=checkoutSessionURL
+ }
+
+    }catch(error){
+      console.log(error);
+      
+    }
+ }
  }
 
   return (

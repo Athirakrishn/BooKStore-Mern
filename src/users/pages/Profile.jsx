@@ -270,77 +270,76 @@ const Profile = () => {
           </div>
         }
         {/* book status */}
-        {
-          bookStatus &&
-          <div className='p-10 my-20 shadow rounded'>
+ {
+        bookStatus &&
+        <div className='p-10 my-20 shadow rounded'>
             {/* duplicate div accordign to book  */}
-            {userBooks?.length > 0 ?
-              userBooks?.map((item, index) => (
-                <div key={index} className="p-5 rounded mt-4 bg-gray-100">
-                  <div className="md:grid grid-cols-[3fr_1fr]">
-                    <div className="px-4">
-                      <h1 className="text-2xl">{item.title}</h1>
-                      <h2 className="text-xl">{item.author}</h2>
-                      <h3 className="text-lg text-blue-500">{item.price}</h3>
-                      <p className="text-justify">{item.abstract}</p>
-                      <div className="flex mt-3">
-                        {item?.status == "pending" ? <img width={'150px'} height={'150px'} src="https://pngimg.com/uploads/approved/approved_PNG1.png" alt="pending icon" /> : item?.status == "approved" ? <img width={'150px'} height={'150px'} src="https://psdstamps.com/wp-content/uploads/2022/04/round-pending-stamp-png.png" alt="pending icon" /> :
-                          <img width={'100px'} height={'100px'} src="https://psdstamps.com/wp-content/uploads/2022/04/round-pending-stamp-png.png " alt="approved icon" />
-                        }
-
+            {
+              userBooks?.length>0 ?
+                userBooks?.map((item,index)=>(
+                  <div key={index} className="p-5 rounded mt-4 bg-gray-100">
+                    <div className="md:grid grid-cols-[3fr_1fr]">
+                      <div className="px-4">
+                        <h1 className="text-2xl">{item?.title}</h1>
+                        <h2 className="text-xl">{item?.author}</h2>
+                        <h3 className="text-lg text-blue-500">$ {item?.discountPrice}</h3>
+                        <p className="text-justify">{item?.abstract}</p>
+                        <div className="flex mt-3">
+                          {item?.status=="pending" ? <img width={'130px'} height={'100px'} src="https://psdstamps.com/wp-content/uploads/2022/04/round-pending-stamp-png.png" alt="pending icon" /> : item?.status=="approved"?
+                          <img width={'80px'} height={'80px'} src="https://pngimg.com/uploads/approved/approved_PNG1.png" alt="approved icon" /> :
+                          <img width={'120px'} height={'120px'} src="https://cdn-icons-png.flaticon.com/512/6188/6188726.png" alt="sold icon" />}
+                        </div>
                       </div>
-                    </div>
-                    <div className="px-4 mt-4 md:mt-0">
-                      <img className="w-full" src={item.imageUrl} alt="book" />
-                      <div className="mt-4 flex justify-end">
-                        <button onClick={() => { removeBook(item?._id) }} className="py-2 px-3 rounded bg-red-600 text-white ms-3 hover:bg-white hover:border hover:text-red-600 hover:border-red-600">Delete</button>
+                      <div className="px-4 mt-4 md:mt-0">
+                        <img className="w-full" src={item?.imageUrl} alt="book" />
+                        <div className="mt-4 flex justify-end">
+                          <button onClick={()=>removeBook(item?._id)} className="py-2 px-3 rounded bg-red-600 text-white ms-3 hover:bg-white hover:border hover:text-red-600 hover:border-red-600">Delete</button>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              ))
+                ))
               :
               <div className='flex justify-center items-center flex-col'>
                 <img width={'45%'} height={'200px'} src="https://usagif.com/wp-content/uploads/gifs/book-56.gif" alt="book" />
                 <p className='font-bold text-xl'>Books not uploaded yet!!!</p>
               </div>
             }
-          </div>
-        }
+        </div>
+      }
         {/* purchase history*/}
-        {
-          purchaseStatus &&
-          <div className='p-10 my-20 shadow rounded'>
+ {
+        purchaseStatus &&
+        <div className='p-10 my-20 shadow rounded'>
             {/* duplicate div accordign to book  */}
-            {purchaseBooks?.length > 0 ?
-              purchaseBooks?.map((item, index) => {
-                <div className="p-5 rounded mt-4 bg-gray-100">
-                  <div className="md:grid grid-cols-[3fr_1fr]">
-                    <div className="px-4">
-                      <h1 className="text-2xl">{item.title}</h1>
-                      <h2 className="text-xl">{item.author}</h2>
-                      <h3 className="text-lg text-blue-500">{item.price}</h3>
-                      <p className="text-justify">{item.abstract}</p>
-                      <div className=" mt-3">
-                        <img width={'150px'} height={'150px'} src="https://www.psdstamps.com/wp-content/uploads/2022/04/round-sold-stamp-png.png" alt="sold icon" />
+            {
+              purchaseBooks?.length>0 ?
+                purchaseBooks?.map((item,index)=>(
+                  <div key={index} className="p-5 rounded mt-4 bg-gray-100">
+                    <div className="md:grid grid-cols-[3fr_1fr]">
+                      <div className="px-4">
+                        <h1 className="text-2xl">{item?.title}</h1>
+                        <h2 className="text-xl">{item?.author}</h2>
+                        <h3 className="text-lg text-blue-500">$ {item?.discountPrice}</h3>
+                        <p className="text-justify">{item?.abstract}</p>
+                        <div className=" mt-3">
+                          <img width={'150px'} height={'150px'} src="https://static.vecteezy.com/system/resources/previews/023/629/698/non_2x/web-button-icon-purchase-button-free-png.png" alt="purchase icon" />
+                        </div>
+                      </div>
+                      <div className="px-4 mt-4 md:mt-0">
+                        <img className="w-full" src={item?.imageUrl} alt="book" />
                       </div>
                     </div>
-                    <div className="px-4 mt-4 md:mt-0">
-                      <img className="w-full" src="https://images.pexels.com/photos/19095295/pexels-photo-19095295.jpeg?cs=srgb&dl=pexels-esrakorkmaz-19095295.jpg&fm=jpg" alt="book" />
-
-                    </div>
                   </div>
-                </div>
-              })
-
+                ))
               :
-             <div className='flex justify-center items-center flex-col'>
+              <div className='flex justify-center items-center flex-col'>
                 <img width={'45%'} height={'200px'} src="https://usagif.com/wp-content/uploads/gifs/book-56.gif" alt="book" />
-                <p className='font-bold text-xl'>Books not uploaded yet!!!</p>
+                <p className='font-bold text-xl'>Books are not purchased yet!!!</p>
               </div>
             }
-          </div>
-        }
+        </div>
+      }
       </div>
       <Footer />
       <ToastContainer

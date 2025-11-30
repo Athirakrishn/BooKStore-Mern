@@ -51,10 +51,10 @@ const logOut = ()=>{
         {/* login */}
         <div className='md:flex justify-end items-center hidden'>
           <FontAwesomeIcon icon={faInstagram} />
-          <FontAwesomeIcon icon={faTwitter} />
+          <FontAwesomeIcon icon={faTwitter} /> 
           <FontAwesomeIcon icon={faFacebook} />
           {/* login link   */}
-          {!token ? <Link to={'/login'}> <button className='border border-black rounded px-3 py-3 hover:bg-black hover:text-white'><FontAwesomeIcon icon={faUser} className='me-2' /> Login</button> </Link>
+          {!token ?  <Link to={'/login'}> <button className='border border-black rounded px-3 py-3 hover:bg-black hover:text-white'><FontAwesomeIcon icon={faUser} className='me-2' /> Login</button> </Link>
             :
             <div className="relative inline-block text-left">
        

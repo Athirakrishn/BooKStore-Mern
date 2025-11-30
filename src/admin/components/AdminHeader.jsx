@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import { userAuthContext } from '../../contextAPI/AuthContext'
 function AdminHeader() {
   const navigate = useNavigate()
-   const {role,authorisedUser,setAuthorisedUser} = useContext(userAuthContext)
+  const {role,authorisedUser,setAuthorisedUser} = useContext(userAuthContext)
   
 
 

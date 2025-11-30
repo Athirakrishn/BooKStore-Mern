@@ -31,7 +31,10 @@ export const addApplicationAPI = async (reqBody,reqHeader)=>{
   return await  commonAPI("POST",`${SERVERURL}/application/add`,reqBody,reqHeader)
 }
 
-
+//make payment
+export const makePaymentAPI  = async (reqBody,reqHeader)=>{
+  return await  commonAPI("POST",`${SERVERURL}/make-payment`,reqBody,reqHeader)
+}
 
 
 //---------------------------authorized user api--------------------------
